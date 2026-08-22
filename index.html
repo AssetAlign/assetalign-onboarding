@@ -6,6 +6,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AssetAlign — Employee Onboarding v3</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+(function(){emailjs.init('kX8q18hmRaom62pMz');})();
+
+function aaGetTimestamp(){
+  return new Date().toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'});
+}
+function aaGetDevice(){
+  return /Mobile|Android|iPhone|iPad/.test(navigator.userAgent)?'Mobile':'Desktop';
+}
+// Owner self-mute: open the link once with ?me=1 to silence notifications from THIS browser/device.
+function aaIsOwner(){
+  try{
+    var p=new URLSearchParams(window.location.search);
+    if(p.get('me')==='1'){localStorage.setItem('aa_owner','1');}
+    if(p.get('me')==='0'){localStorage.removeItem('aa_owner');}
+    return localStorage.getItem('aa_owner')==='1';
+  }catch(e){return false;}
+}
+function aaSendVisit(geo){
+  var device=aaGetDevice();
+  var pageUrl=window.location.href;
+  var referrer=document.referrer||'direct';
+  var loc=geo?((geo.city||'?')+', '+(geo.region||'?')+', '+(geo.country_name||geo.country||'?')):'unavailable';
+  var ip=geo?(geo.ip||'?'):'unavailable';
+  var net=geo?(geo.org||geo.asn||'?'):'unavailable';
+  emailjs.send('service_jy3zs68','template_a3slvpn',{
+    to_email:'alex@assetalign.net',
+    subject:'AssetAlign Onboarding — Opened',
+    message:'Someone just opened the AssetAlign Onboarding prototype.\n\nLocation: '+loc+'\nIP: '+ip+'\nNetwork / ISP: '+net+'\nDevice: '+device+'\nCame from: '+referrer+'\nTime: '+aaGetTimestamp()+'\nFull URL: '+pageUrl,
+    name:'Onboarding visitor',
+    email:'noreply@assetalign.net',
+    reply_to:'noreply@assetalign.net'
+  });
+}
+window.addEventListener('load',function(){
+  if(aaIsOwner())return;
+  fetch('https://ipapi.co/json/')
+    .then(function(r){return r.json();})
+    .then(function(geo){aaSendVisit(geo);})
+    .catch(function(){aaSendVisit(null);});
+});
+</script>
 <!--
   ═══════════════════════════════════════════════════════════════════
   ASSETALIGN EMPLOYEE ONBOARDING — v3
