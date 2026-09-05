@@ -431,8 +431,8 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
     <div class="card">
       <div style="font-size:18px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">First things first —</div>
       <div style="font-size:14px;color:#1a1a1a;margin-bottom:4px;">What's the biggest financial focus for you right now?</div>
-      <div style="font-size:12px;color:#666;margin-bottom:0.75rem;">Drag to reorder. Your #1 shapes everything we do for you.</div>
-      <div style="font-size:11px;color:#aaa;text-align:center;margin-bottom:0.5rem;">Drag to reorder</div>
+      <div style="font-size:12px;color:#666;margin-bottom:0.75rem;">Your #1 shapes everything we do for you.</div>
+      <div style="font-size:11px;color:#999;font-style:italic;margin-bottom:0.6rem;">We've started these in the order that tends to matter most at your stage — drag to reorder if that's not you.</div>
       <div class="priority-grid" id="priGrid"></div>
       <button class="btn-p" onclick="selectPriority()">This looks right →</button>
     </div>
@@ -452,43 +452,22 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       </div>
       <div style="font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">A dollar saved is a dollar working for you.</div>
       <div style="font-size:13px;color:#666;line-height:1.6;">Small decisions matter greatly when the power of compounding is factored in. We're committed to stretching every dollar — your insurance rate, your mortgage, your monthly savings rate. Nothing slips through.</div>
-      <button class="btn-p" onclick="go(5)" style="margin-top:1rem;">Next →</button>
-    </div>
-  </div>
-
-
-  <!-- ─────────────────────────────────────────────
-       S5 — FINANCIAL STRESS
-  ───────────────────────────────────────────── -->
-  <div class="screen" id="s5">
-    <div class="nav-row"><button class="back" onclick="go(4)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
-    <div class="card">
-      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">The first step is a plan.</div>
-      <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">People with a written financial plan are significantly more likely to feel in control, hit their savings goals, and weather unexpected setbacks.</div>
-      <div style="font-size:14px;font-weight:500;color:#1a1a1a;margin:0 0 6px;">You're not alone.</div>
-      <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:0.75rem;">Financial stress touches everyone — regardless of income, age, or how put-together things look from the outside.</div>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="stat-num">66%</div><div class="stat-label">of employees stressed about their finances</div></div>
-        <div class="stat-card"><div class="stat-num">73%</div><div class="stat-label">say money is their #1 source of stress</div></div>
-        <div class="stat-card"><div class="stat-num">78%</div><div class="stat-label">lose sleep over financial worries</div></div>
-        <div class="stat-card"><div class="stat-num">62%</div><div class="stat-label">say it impacts their productivity</div></div>
-      </div>
       <button class="btn-p" onclick="go(6)" style="margin-top:1rem;">Next →</button>
-      <div class="citation">Sources: Bank of America Employee Financial Wellness Study, 2025. PwC Employee Financial Wellness Survey. American Academy of Sleep Medicine, 2025.</div>
     </div>
   </div>
 
 
   <!-- ─────────────────────────────────────────────
        S6 — NEIGHBOR CHART
-       (Moved ahead of the advisor-vetting screen — makes
-       the case for why a plan from a professional matters
-       BEFORE "advisor" is introduced by name, so S7 doesn't
-       land on the reader cold. "Advisor" language softened
-       to "plan" throughout this screen for the same reason.)
+       2026-09-05, per Alex: cut the Financial Stress screen
+       (formerly S5, before this) and the Advisor Quality screen
+       (formerly S7, after this) — this screen now goes straight
+       from S4 into "Get my plan" → S8. Old S5/S7 content removed
+       outright, not just made unreachable — see git history for
+       that copy if it's ever wanted back.
   ───────────────────────────────────────────── -->
   <div class="screen" id="s6">
-    <div class="nav-row"><button class="back" onclick="go(5)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
+    <div class="nav-row"><button class="back" onclick="go(4)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
     <div class="card">
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">Meet your neighbor.</div>
       <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Same street. Same income. Same mortgage. Same expenses. Exact same financial situation — with one difference: a plan from a financial professional.</div>
@@ -517,40 +496,9 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         <div style="background:#eaf3de;color:#27500a;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-top:8px;display:inline-block;">Covered by your employer</div>
       </div>
       <div style="font-size:15px;font-weight:500;color:#1a3a5c;text-align:center;margin:0.75rem 0 0.5rem;">The difference isn’t luck. It’s having a real plan — built by someone who knows what they’re doing.</div>
-      <button class="btn-p" onclick="go(7)">See who builds your plan →</button>
+      <button class="btn-p" onclick="goTransition()">Get my plan →</button>
       <div class="hypothetical">* Hypothetical illustration only. Assumes $100,000 starting balance, 7% annual return without professional guidance and 10% with. Actual results will vary.</div>
       <div class="citation">Source: Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024.</div>
-    </div>
-  </div>
-
-
-  <!-- ─────────────────────────────────────────────
-       S7 — ADVISOR QUALITY
-       (Moved after the neighbor-chart screen — by now
-       the reader has already bought into "a plan from a
-       professional matters," so naming "advisor" here
-       lands as the answer, not a cold pitch.)
-  ───────────────────────────────────────────── -->
-  <div class="screen" id="s7">
-    <div class="nav-row"><button class="back" onclick="go(6)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
-    <div class="card">
-      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Not just any advisor. The right one.</div>
-      <div style="font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6;">Anyone can call themselves a financial advisor. We spent years building the Align Network of Financial Advisors — one most people will never have access to on their own.</div>
-      <div style="text-align:center;margin-bottom:0.5rem;">
-        <div style="font-size:52px;font-weight:600;color:#1a3a5c;line-height:1;">95%</div>
-        <div style="font-size:13px;color:#666;margin-top:4px;">of applicants don't make the Align Network.</div>
-      </div>
-      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Proven client experience</div><div class="vetting-desc">Advisors with a demonstrated track record of guiding real clients through real financial decisions.</div></div></div>
-      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Professional designation required</div><div class="vetting-desc">CFP®, CFA, CPA, or equivalent — proven expertise, not just a license.</div></div></div>
-      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Clean regulatory record</div><div class="vetting-desc">Zero complaints, zero disciplinary actions — it's our baseline, not a bonus.</div></div></div>
-      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Held to the standard every year</div><div class="vetting-desc">Getting into the Align Network isn't a one-time bar — advisors are reviewed annually to stay in it.</div></div></div>
-      <div style="font-size:14px;font-weight:500;color:#1a1a1a;margin:1.25rem 0 6px;">Someone for everyone.</div>
-      <div class="segment-row">
-        <div class="seg-card"><div class="seg-icon">🌱</div><div class="seg-title">Just starting out</div><div class="seg-desc">Debt, first job, building savings</div></div>
-        <div class="seg-card"><div class="seg-icon">🏠</div><div class="seg-title">Building &amp; buying</div><div class="seg-desc">Home, family, growing wealth</div></div>
-        <div class="seg-card"><div class="seg-icon">🌅</div><div class="seg-title">Near retirement</div><div class="seg-desc">Wealth preservation, income planning</div></div>
-      </div>
-      <button class="btn-p" onclick="goTransition()">Let’s build my plan →</button>
     </div>
   </div>
 
@@ -640,10 +588,15 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
     <div class="nav-row"><button class="back" onclick="go(11)">← Back</button><span class="step-ct">Section 3 — Schedule</span></div>
     <div class="card">
 
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:1rem;">No charge — covered by your employer</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:1rem;">No charge, no commitment — covered by your employer</div>
 
       <div style="font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Last step — grab a time with <span id="schedAdvisorName">your advisor</span>.</div>
-      <div style="font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6;">Takes a few seconds. <span id="schedAdvisorFirst">Your advisor</span> already has your goals, so you’re all set — the session itself happens whenever works for you.</div>
+      <!-- 2026-09-05, per Alex: reinforce "no charge, no commitment" and
+           reframe this step as being about getting a plan moving, not a
+           sales meeting to sign up for — added above the scheduling widget
+           itself, same "soft-land" register as the rest of the advisor
+           copy established earlier this session. -->
+      <div style="font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6;">This is about getting your financial plan moving — nothing to sign, nothing to commit to. <span id="schedAdvisorFirst">Your advisor</span> already has your goals, so this takes just a few seconds.</div>
 
       <!-- Advisor mini-card (populated by JS) -->
       <div id="schedAdvisorMini" class="sched-advisor-mini">
@@ -1005,6 +958,35 @@ const allPriorities = [
   {id:'retire',icon:'🌅',cls:'retire',title:'Retire comfortably',sub:'Max contributions, plan your timeline'},
   {id:'protect',icon:'🛡️',cls:'protect',title:'Protect my family',sub:'Insurance, estate planning, peace of mind'},
 ];
+
+// 2026-09-05, per Alex: "someone 55 might have something different from
+// 23.. we could have them start in an order based on age." Shared with the
+// later Zebra-handoff age calc (goToDashboard()) so there's one source of
+// truth for "age" instead of two copies of the same DOB math.
+function computeAge(){
+  const dobStr = urlParams.get('dob') || finchProfile.dob;
+  const dob = new Date(dobStr + 'T00:00:00');
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const hadBirthdayThisYear = (today.getMonth() > dob.getMonth()) ||
+    (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+  if(!hadBirthdayThisYear) age--;
+  return age;
+}
+
+// A heuristic, not a fabricated stat — a reasonable default ordering per
+// life stage, always overridable by drag-and-drop. Under-30 leans debt/home
+// (early career, first home ahead); 30s-40s leans home/debt (family
+// formation, still-active debt); 45-59 leans invest/retire (peak earning,
+// retirement coming into view); 60+ leans retire/protect (retirement/estate
+// front and center). Falls back to the 30s-40s order if age is unavailable.
+function priorityOrderForAge(age){
+  if(age == null || isNaN(age)) return ['home','debt','invest','protect','retire'];
+  if(age < 30)  return ['debt','home','invest','protect','retire'];
+  if(age < 45)  return ['home','debt','invest','protect','retire'];
+  if(age < 60)  return ['invest','retire','protect','home','debt'];
+  return ['retire','protect','invest','home','debt'];
+}
 const focusContent = {
   debt:{icon:'💳',title:"Great. Let's tackle that debt.",body:"Carrying debt is one of the biggest drags on long-term wealth. We'll build your experience around eliminating it efficiently."},
   home:{icon:'🏠',title:"Great. Let's focus on this goal.",body:"Let's make smart decisions now to put you in a good spot for when you're ready — and when you are, we have mortgage partners with great rates ready to help."},
@@ -1472,10 +1454,11 @@ function confirmAlt(){
 // ═══════════════════════════════════════════════════
 function buildGrid(){
   const grid = document.getElementById('priGrid');
-  const rec = 'home';
-  const main = allPriorities.find(p=>p.id===rec);
+  const order = priorityOrderForAge(computeAge());
+  const rec = order[0];
+  const ordered = order.map(id => allPriorities.find(p=>p.id===id));
   grid.innerHTML = '';
-  [main,...allPriorities.filter(p=>p.id!==rec)].forEach((p,i)=>{
+  ordered.forEach((p,i)=>{
     const el = document.createElement('div');
     el.className = 'pri-card'+(p.id===rec?' recommended':'');
     el.draggable = true; el.dataset.id = p.id;
@@ -1904,14 +1887,9 @@ function goToDashboard(){
   const firstName = urlParams.get('first_name') || finchProfile.first_name;
   const homeState = urlParams.get('home_state') || finchProfile.home_state;
   // Age (not raw DOB) — enough for the "drivers your age" stat hook on the
-  // Zebra nudge without passing full birthdate through a URL.
-  const dobStr = urlParams.get('dob') || finchProfile.dob;
-  const dobForAge = new Date(dobStr + 'T00:00:00');
-  const today = new Date();
-  let age = today.getFullYear() - dobForAge.getFullYear();
-  const hadBirthdayThisYear = (today.getMonth() > dobForAge.getMonth()) ||
-    (today.getMonth() === dobForAge.getMonth() && today.getDate() >= dobForAge.getDate());
-  if(!hadBirthdayThisYear) age--;
+  // Zebra nudge without passing full birthdate through a URL. Same
+  // computeAge() S3's priority ordering already uses — one source of truth.
+  const age = computeAge();
 
   const handoffParams = new URLSearchParams({
     goal: selectedPriority,
