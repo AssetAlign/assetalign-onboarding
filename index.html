@@ -197,13 +197,6 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .btn-link:hover { background: #e6f1fb; }
 .other-options-section { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 0.5px solid rgba(0,0,0,0.08); }
 .other-options-title { font-size: 12px; font-weight: 500; color: #999; text-align: center; margin-bottom: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
-.inperson-toggle { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f5f5f3; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
-.inperson-toggle-label { font-size: 13px; color: #1a1a1a; }
-.inperson-toggle-sub { font-size: 11px; color: #666; margin-top: 2px; }
-.toggle-switch { width: 36px; height: 20px; background: #ddd; border-radius: 99px; position: relative; transition: background 0.2s; flex-shrink: 0; }
-.toggle-switch.on { background: #1a3a5c; }
-.toggle-knob { width: 16px; height: 16px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-.toggle-switch.on .toggle-knob { left: 18px; }
 .alt-advisor-card { border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1rem; margin-bottom: 10px; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: #fff; }
 .alt-advisor-card.selected { border-color: #1a3a5c; background: #e6f1fb; }
 .alt-advisor-card:hover { border-color: #aac4de; }
@@ -1080,7 +1073,7 @@ function go(n, fromPopState){
   if(n===6) setTimeout(buildChart,300);
   if(n===11) renderPrimaryAdvisor();
   if(n===12) showScheduleScreen(schedulingAdvisor || advisorArchive[0]);
-  if(n===13) renderAltAdvisors('all');
+  if(n===13) filterAdvisors(inPersonPreferred ? 'inperson' : 'all');
   window.scrollTo(0,0);
   // Push a real browser-history entry per screen so the browser's own Back
   // button steps back one screen at a time instead of leaving the app
@@ -1346,6 +1339,15 @@ function renderPrimaryAdvisor(){
       <div style="font-size:13px;color:#1a3a5c;line-height:1.55;"><b>${a.name.split(' ')[0]} works with people in your exact situation</b> — right where you are now, with the same goals you just shared. This is exactly who they help, every single day.</div>
     </div>
 
+    <div style="background:#f5f5f3;border-radius:10px;padding:12px 14px;margin:0 0 1rem;">
+      <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">How would you like to meet?</div>
+      <div style="font-size:11px;color:#666;margin-bottom:10px;">Most clients find virtual just as effective — but this is your experience.</div>
+      <div class="filter-bar" style="margin-bottom:0;">
+        <button class="filter-btn ${!inPersonPreferred?'active':''}" id="fmtVirtualBtn" onclick="selectMeetingFormat(false)">💻 Virtual</button>
+        <button class="filter-btn ${inPersonPreferred?'active':''}" id="fmtInPersonBtn" onclick="selectMeetingFormat(true)">🤝 In person</button>
+      </div>
+    </div>
+
     <div class="stat-row">
       <div class="advisor-stat"><div style="font-size:18px;font-weight:500;color:#1a3a5c;line-height:1;">${a.clients}</div><div style="font-size:10px;color:#666;margin-top:3px;">Clients guided</div></div>
       <div class="advisor-stat"><div style="font-size:18px;font-weight:500;color:#1a3a5c;line-height:1;">${a.years}</div><div style="font-size:10px;color:#666;margin-top:3px;">In practice</div></div>
@@ -1365,13 +1367,6 @@ function renderPrimaryAdvisor(){
 
     <div class="other-options-section">
       <div class="other-options-title">Not the right fit?</div>
-      <div class="inperson-toggle" onclick="toggleInPerson()" id="inPersonToggleRow">
-        <div>
-          <div class="inperson-toggle-label">🤝 I prefer to meet in person</div>
-          <div class="inperson-toggle-sub" id="inPersonToggleSub">We'll prioritize advisors near you</div>
-        </div>
-        <div class="toggle-switch" id="inPersonToggle"><div class="toggle-knob"></div></div>
-      </div>
       <button class="btn-o" onclick="go(13)" style="margin-top:0;">See more advisor options →</button>
     </div>
   `;
@@ -1382,13 +1377,19 @@ function goToSchedule(advisor){
   go(12);
 }
 
+// 2026-09-05, per Alex: a quick, upfront meeting-format preference with a
+// gentle nudge toward virtual ("most clients prefer this, but this is your
+// experience") — replaces the old toggle that was buried under "Not the
+// right fit?" (same underlying inPersonPreferred flag the S13 alt-advisor
+// filter already reads, just asked as a real question instead of an
+// after-the-fact escape hatch).
 let inPersonPreferred = false;
-function toggleInPerson(){
-  inPersonPreferred = !inPersonPreferred;
-  const sw = document.getElementById('inPersonToggle');
-  const sub = document.getElementById('inPersonToggleSub');
-  sw.classList.toggle('on', inPersonPreferred);
-  sub.textContent = inPersonPreferred ? 'In-person match prioritized' : 'We\'ll prioritize advisors near you';
+function selectMeetingFormat(wantsInPerson){
+  inPersonPreferred = wantsInPerson;
+  const vBtn = document.getElementById('fmtVirtualBtn');
+  const pBtn = document.getElementById('fmtInPersonBtn');
+  if(vBtn) vBtn.classList.toggle('active', !wantsInPerson);
+  if(pBtn) pBtn.classList.toggle('active', wantsInPerson);
 }
 
 // ═══════════════════════════════════════════════════
