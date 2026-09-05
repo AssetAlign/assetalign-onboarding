@@ -85,7 +85,7 @@ window.addEventListener('load',function(){
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 24px 16px 60px; min-height: 100vh; }
-.wrap { max-width: 480px; margin: 0 auto; }
+.wrap { max-width: 520px; margin: 0 auto; }
 .proto-banner { text-align: center; margin-bottom: 1.5rem; padding: 8px 14px; background: #1a3a5c; border-radius: 99px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
 .proto-banner span { font-size: 11px; color: #a8bfd4; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
 .progress-bar { display: flex; gap: 6px; margin-bottom: 1rem; }
@@ -93,7 +93,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .ps.done { background: #1a3a5c; }
 .ps.active { background: #c8a84b; }
 .prog-label { font-size: 11px; color: #888; text-align: center; margin-bottom: 1.25rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.card { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.card { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.75rem; margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
 .logo { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
 .logo span { color: #c8a84b; }
 .tagline { font-size: 14px; font-weight: 500; color: #1a3a5c; margin-bottom: 1rem; }
@@ -111,6 +111,8 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .field { margin-bottom: 0.75rem; }
 .field label { font-size: 12px; color: #666; display: block; margin-bottom: 3px; }
 .fval { font-size: 14px; font-weight: 500; color: #1a1a1a; background: #f5f5f3; border-radius: 8px; padding: 8px 10px; border: 0.5px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; }
+.fval-input { width: 100%; font-family: inherit; font-size: 14px; font-weight: 500; color: #1a1a1a; background: #fff; border-radius: 8px; padding: 8px 10px; border: 1.5px solid #1a3a5c; box-sizing: border-box; }
+.fval-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(26,58,92,0.12); }
 .badge-g { background: #eaf3de; color: #3b6d11; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
 .badge-a { background: #faeeda; color: #854f0b; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0; }
@@ -139,10 +141,10 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .vetting-title { font-size: 13px; font-weight: 500; color: #1a1a1a; margin-bottom: 2px; }
 .vetting-desc { font-size: 12px; color: #666; line-height: 1.5; }
 .segment-row { display: flex; gap: 8px; margin: 1rem 0; }
-.seg-card { flex: 1; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 10px 8px; text-align: center; }
-.seg-icon { font-size: 20px; margin-bottom: 4px; }
-.seg-title { font-size: 11px; font-weight: 500; color: #1a1a1a; margin-bottom: 2px; }
-.seg-desc { font-size: 10px; color: #666; line-height: 1.4; }
+.seg-card { flex: 1; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 14px 10px; text-align: center; }
+.seg-icon { font-size: 26px; margin-bottom: 6px; }
+.seg-title { font-size: 13px; font-weight: 500; color: #1a1a1a; margin-bottom: 3px; }
+.seg-desc { font-size: 11px; color: #666; line-height: 1.4; }
 .neighbor-intro { background: #f5f5f3; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
 .neighbor-houses { display: flex; align-items: flex-end; justify-content: center; gap: 24px; margin: 0.75rem 0; }
 .house { text-align: center; }
@@ -151,7 +153,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .chart-wrap { position: relative; width: 100%; height: 240px; }
 .gap-badge { background: #eaf3de; border-radius: 8px; padding: 12px; margin: 1rem 0; text-align: center; }
-.covered-row { display: flex; align-items: center; justify-content: space-between; background: #f5f5f3; border-radius: 8px; padding: 12px 14px; margin: 0.75rem 0; }
+.covered-row { display: flex; flex-direction: column; align-items: center; text-align: center; background: #f5f5f3; border-radius: 8px; padding: 18px 14px; margin: 0.75rem 0; }
 .price-strike { text-decoration: line-through; color: #999; font-size: 13px; }
 .next-step-row { display: flex; align-items: center; gap: 12px; padding: 12px; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 8px; margin-bottom: 8px; background: #fff; }
 .nsd { background: #eaf3de; color: #3b6d11; width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0; }
@@ -163,7 +165,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .q-opt { padding: 9px 12px; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 13px; color: #1a1a1a; cursor: pointer; background: #fff; text-align: left; font-family: inherit; transition: border-color 0.15s; }
 .q-opt:hover { border-color: #1a3a5c; background: #f0f6fc; }
 .q-opt.selected { border-color: #1a3a5c; background: #e6f1fb; color: #0c447c; }
-.q-opt.auto-selected { border-color: #3b6d11; background: #eaf3de; color: #27500a; pointer-events: none; }
+.q-opt.auto-selected { border-color: #3b6d11; background: #eaf3de; color: #27500a; }
 .auto-tag { font-size: 10px; background: rgba(59,109,17,0.15); color: #27500a; padding: 1px 6px; border-radius: 99px; margin-left: 6px; font-weight: 500; }
 .section-label { font-size: 11px; font-weight: 500; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 6px; border-bottom: 0.5px solid rgba(0,0,0,0.06); }
 .spinner-ring { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #e0ddd6; border-top-color: #1a3a5c; animation: spin 1s linear infinite; margin: 0 auto 1.5rem; }
@@ -225,9 +227,9 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   position: relative !important;
   z-index: 1001 !important;
   border-radius: 12px;
-  outline: 3px solid #c8a84b;
-  outline-offset: 5px;
-  box-shadow: 0 0 0 9999px rgba(8,20,48,0.74), 0 4px 24px rgba(200,168,75,0.25) !important;
+  outline: 3px solid #e8c56a;
+  outline-offset: 6px;
+  box-shadow: 0 0 0 9999px rgba(6,15,36,0.86), 0 0 30px 4px rgba(232,197,106,0.4) !important;
   transition: box-shadow 0.25s, outline 0.25s;
 }
 .tutorial-card {
@@ -239,9 +241,13 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   background: #fff;
   border-radius: 16px;
   padding: 20px;
-  z-index: 1002;
+  z-index: 1004;
   box-shadow: 0 8px 40px rgba(0,0,0,0.28);
 }
+/* When there's room in the gutter beside the narrow content column, the
+   card docks to the side instead of floating over the page, and an SVG
+   arrow (drawn in positionTutorialCard/drawTutArrow) points at the target. */
+.tutorial-card-side { width: 300px; }
 .tut-dots { display: flex; gap: 6px; margin-bottom: 12px; }
 .tut-dot { width: 6px; height: 6px; border-radius: 50%; background: #e0ddd6; flex-shrink: 0; transition: all 0.2s; }
 .tut-dot.on { background: #c8a84b; width: 18px; border-radius: 99px; }
@@ -264,33 +270,59 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .sched-advisor-mini-name { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-bottom: 2px; }
 .sched-advisor-mini-sub { font-size: 12px; color: #666; }
 
-/* ── Calendly placeholder ── */
-.calendly-placeholder {
-  border: 2px dashed #c8a84b;
-  border-radius: 12px;
-  background: #fffdf3;
-  padding: 32px 20px;
-  text-align: center;
-  margin: 1rem 0;
+/* ── Mock Calendly-style widget (visual only — not a real Calendly embed) ── */
+.cal-widget {
+  border: 1px solid #e3e1dc; border-radius: 12px; overflow: hidden;
+  background: #fff; margin: 1rem 0;
 }
-.calendly-placeholder-icon { font-size: 36px; margin-bottom: 12px; }
-.calendly-placeholder-title {
-  font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px;
+.cal-widget-host {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 18px 12px; border-bottom: 1px solid #eee;
 }
-.calendly-placeholder-code {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 12px; color: #854f0b;
-  background: #faeeda; border-radius: 6px;
-  padding: 8px 12px; margin: 10px 0;
-  display: inline-block; text-align: left; width: 100%;
+.cal-widget-host-name { font-size: 11.5px; color: #888; }
+.cal-widget-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-top: 1px; }
+.cal-widget-meta {
+  display: flex; flex-direction: column; gap: 7px;
+  padding: 12px 18px; font-size: 12.5px; color: #4d4d4d;
+  border-bottom: 1px solid #eee;
 }
-.calendly-placeholder-sub { font-size: 12px; color: #888; line-height: 1.6; }
-.calendly-placeholder-badge {
-  display: inline-block; background: #c8a84b; color: #fff;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; padding: 3px 10px; border-radius: 99px;
-  margin-bottom: 12px;
+.cal-widget-body { padding: 16px 18px; }
+.cal-month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cal-month-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.cal-month-arrow {
+  width: 26px; height: 26px; border-radius: 50%; border: none; background: transparent;
+  color: #555; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-family: inherit;
 }
+.cal-month-arrow:disabled { color: #ddd; cursor: default; }
+.cal-month-arrow:not(:disabled):hover { background: #f0f0ee; }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
+.cal-weekday { font-size: 10px; font-weight: 600; color: #999; text-align: center; text-transform: uppercase; }
+.cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 12.5px; border-radius: 50%; border: none; background: transparent;
+  font-family: inherit; color: #ccc; cursor: default; padding: 0;
+}
+.cal-day.avail { color: #1a3a5c; font-weight: 600; cursor: pointer; background: #eef2f6; }
+.cal-day.avail:hover { background: #1a3a5c; color: #fff; }
+.cal-day.today { box-shadow: inset 0 0 0 1.5px #c8a84b; }
+.cal-tz-row {
+  display: flex; align-items: center; gap: 6px; margin-top: 14px;
+  padding-top: 12px; border-top: 1px solid #eee; font-size: 11.5px; color: #888;
+}
+.cal-times-back {
+  background: none; border: none; color: #1a3a5c; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit; padding: 0 0 12px; display: block; text-align: left;
+}
+.cal-times-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 2px; }
+.cal-time-btn {
+  width: 100%; padding: 10px 14px; border: 1.5px solid #1a3a5c; border-radius: 6px;
+  background: #fff; color: #1a3a5c; font-family: inherit; font-size: 13px; font-weight: 600;
+  text-align: center; cursor: pointer; transition: background .15s, color .15s;
+}
+.cal-time-btn:hover { background: #1a3a5c; color: #fff; }
+.cal-time-btn.selected { background: #eaf3de; border-color: #3b6d11; color: #27500a; }
 
 /* ── Calendly live embed container ── */
 .calendly-live-wrap {
@@ -343,9 +375,9 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <hr class="divider">
       <!-- NOTE: No "partner" language — employer simply makes this available -->
       <!-- s1EmployerName is populated from the ?employer= URL param passed in the welcome email link -->
-      <p style="font-size:13px;color:#1a1a1a;margin-bottom:6px;"><span id="s1EmployerName">Your employer</span> has made AssetAlign available to every employee — giving you access to a free financial plan and a fiduciary advisor matched just for you.</p>
-      <p style="font-size:12px;color:#666;margin-bottom:4px;">We've pulled your info from your employer. Let's take 2 minutes to get you set up.</p>
-      <p style="font-size:11px;color:#aaa;margin-bottom:0;">Participation is completely voluntary. Your employer never sees your information.</p>
+      <p style="font-size:13px;color:#1a1a1a;margin-bottom:6px;">78% of employees lose sleep over financial stress. That's why <span id="s1EmployerName">your employer</span> has made AssetAlign available to you.</p>
+      <p style="font-size:12px;color:#1a1a1a;margin-bottom:4px;">People usually make these decisions in isolation. We brought them together for you — and reward you with Align Credits, just like hotel points. Your info's already loaded — take the next 2 minutes to change your financial future.</p>
+      <p style="font-size:11px;color:#aaa;margin-bottom:0;">Your plan is already covered by your employer — it's completely up to you whether you choose to work with an advisor. Your employer never sees your information.</p>
       <button class="btn-p" onclick="go(2)">Verify My Info &amp; Get Started →</button>
     </div>
   </div>
@@ -358,7 +390,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
     <div class="nav-row"><button class="back" onclick="go(1)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
     <div class="card">
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Confirm your details</div>
-      <div style="font-size:12px;color:#666;margin-bottom:1rem;">Pulled from your employer's payroll system. Let us know if anything looks off.</div>
+      <div style="font-size:12px;color:#666;margin-bottom:1rem;">We've filled in what we already have on file. Let us know if anything looks off.</div>
 
       <!--
         ═══════════════════════════════════════════════════════
@@ -384,20 +416,16 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         ═══════════════════════════════════════════════════════
       -->
 
-      <!-- Finch source badge — reassures user data came from their employer's system -->
-      <div style="display:flex;align-items:center;gap:8px;background:#e6f1fb;border-radius:8px;padding:8px 12px;margin-bottom:1rem;">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1a3a5c" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1a3a5c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span style="font-size:11px;color:#0c447c;font-weight:500;">Pulled securely from your employer's payroll system</span>
-      </div>
-
       <div class="field"><label>Full name</label><div class="fval" id="f_name">—</div></div>
       <div class="field"><label>Date of birth</label><div class="fval" id="f_dob">—</div></div>
+      <div class="field"><label>ZIP code</label><div class="fval" id="f_zip">—</div></div>
       <div class="field"><label>Employer</label><div class="fval" id="f_employer">—</div></div>
       <div class="field"><label>Years at company</label><div class="fval" id="f_years">—</div></div>
       <div class="field"><label>Retirement plan</label><div class="fval" id="f_retirement">—</div></div>
 
-      <button class="btn-p" onclick="go(3)">Yes, this looks correct →</button>
-      <button class="btn-o" onclick="go(3)">Something looks wrong</button>
+      <button class="btn-p" id="s2ConfirmBtn" onclick="go(3)">Yes, this looks correct →</button>
+      <button class="btn-o" id="s2WrongBtn" onclick="enableFieldEditing()">Something looks wrong</button>
+      <button class="btn-p" id="s2SaveBtn" style="display:none;" onclick="go(3)">Save &amp; continue →</button>
     </div>
   </div>
 
@@ -442,16 +470,16 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   <div class="screen" id="s5">
     <div class="nav-row"><button class="back" onclick="go(4)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
     <div class="card">
-      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">You're not alone.</div>
-      <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Financial stress touches everyone — regardless of income, age, or how put-together things look from the outside.</div>
+      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">The first step is a plan.</div>
+      <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">People with a written financial plan are significantly more likely to feel in control, hit their savings goals, and weather unexpected setbacks.</div>
+      <div style="font-size:14px;font-weight:500;color:#1a1a1a;margin:0 0 6px;">You're not alone.</div>
+      <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:0.75rem;">Financial stress touches everyone — regardless of income, age, or how put-together things look from the outside.</div>
       <div class="stat-grid">
         <div class="stat-card"><div class="stat-num">66%</div><div class="stat-label">of employees stressed about their finances</div></div>
         <div class="stat-card"><div class="stat-num">73%</div><div class="stat-label">say money is their #1 source of stress</div></div>
         <div class="stat-card"><div class="stat-num">78%</div><div class="stat-label">lose sleep over financial worries</div></div>
         <div class="stat-card"><div class="stat-num">62%</div><div class="stat-label">say it impacts their productivity</div></div>
       </div>
-      <div style="font-size:14px;font-weight:500;color:#1a1a1a;margin:1rem 0 6px;">The first step is a plan.</div>
-      <div style="font-size:13px;color:#666;line-height:1.6;">People with a written financial plan are significantly more likely to feel in control, hit their savings goals, and weather unexpected setbacks.</div>
       <button class="btn-p" onclick="go(6)" style="margin-top:1rem;">Next →</button>
       <div class="citation">Sources: Bank of America Employee Financial Wellness Study, 2025. PwC Employee Financial Wellness Survey. American Academy of Sleep Medicine, 2025.</div>
     </div>
@@ -459,64 +487,77 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 
 
   <!-- ─────────────────────────────────────────────
-       S6 — ADVISOR QUALITY
+       S6 — NEIGHBOR CHART
+       (Moved ahead of the advisor-vetting screen — makes
+       the case for why a plan from a professional matters
+       BEFORE "advisor" is introduced by name, so S7 doesn't
+       land on the reader cold. "Advisor" language softened
+       to "plan" throughout this screen for the same reason.)
   ───────────────────────────────────────────── -->
   <div class="screen" id="s6">
     <div class="nav-row"><button class="back" onclick="go(5)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
     <div class="card">
+      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">Meet your neighbor.</div>
+      <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Same street. Same income. Same mortgage. Same expenses. Exact same financial situation — with one difference: a plan from a financial professional.</div>
+      <div class="neighbor-intro">
+        <div class="neighbor-houses">
+          <div class="house"><div style="font-size:36px;line-height:1;">🏠</div><div style="font-size:11px;font-weight:500;color:#c8a84b;margin-top:4px;">You</div><div style="font-size:10px;color:#aaa;">No plan</div></div>
+          <div style="font-size:11px;color:#aaa;padding-bottom:12px;">vs</div>
+          <div class="house"><div style="font-size:36px;line-height:1;position:relative;display:inline-block;">🏠<span style="position:absolute;bottom:-4px;right:-10px;font-size:12px;background:#fff;border-radius:50%;border:1.5px solid #c8a84b;width:20px;height:20px;display:flex;align-items:center;justify-content:center;">🧑‍💼</span></div><div style="font-size:11px;font-weight:500;color:#1a3a5c;margin-top:4px;">Your neighbor</div><div style="font-size:10px;color:#aaa;">Has a plan</div></div>
+        </div>
+        <div style="font-size:12px;color:#666;text-align:center;">Starting with the same $100,000. Fast forward 25 years.</div>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#1a3a5c;"></div>Your neighbor (with a plan)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c8a84b;"></div>You (without a plan)</div>
+      </div>
+      <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+      <div class="gap-badge">
+        <div style="font-size:13px;color:#3b6d11;font-weight:500;">That gap is <span id="diffDisplay">—</span>.</div>
+        <div style="font-size:12px;color:#3b6d11;margin-top:3px;">Closing it starts with the next 5 minutes — right here.</div>
+      </div>
+      <div class="covered-row">
+        <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:10px;">Our next step is a financial plan from someone in the Align Network of Financial Advisors.</div>
+        <div style="font-size:12px;color:#999;margin-bottom:2px;">Typically costs</div>
+        <div class="price-strike" style="font-size:15px;margin-bottom:10px;">$2,500 – $3,500</div>
+        <div style="font-size:30px;font-weight:700;color:#27500a;line-height:1;">$0</div>
+        <div style="background:#eaf3de;color:#27500a;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-top:8px;display:inline-block;">Covered by your employer</div>
+      </div>
+      <div style="font-size:15px;font-weight:500;color:#1a3a5c;text-align:center;margin:0.75rem 0 0.5rem;">The difference isn’t luck. It’s having a real plan — built by someone who knows what they’re doing.</div>
+      <button class="btn-p" onclick="go(7)">See who builds your plan →</button>
+      <div class="hypothetical">* Hypothetical illustration only. Assumes $100,000 starting balance, 7% annual return without professional guidance and 10% with. Actual results will vary.</div>
+      <div class="citation">Source: Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024.</div>
+    </div>
+  </div>
+
+
+  <!-- ─────────────────────────────────────────────
+       S7 — ADVISOR QUALITY
+       (Moved after the neighbor-chart screen — by now
+       the reader has already bought into "a plan from a
+       professional matters," so naming "advisor" here
+       lands as the answer, not a cold pitch.)
+  ───────────────────────────────────────────── -->
+  <div class="screen" id="s7">
+    <div class="nav-row"><button class="back" onclick="go(6)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
+    <div class="card">
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Not just any advisor. The right one.</div>
-      <div style="font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6;">Anyone can call themselves a financial advisor. We spent years building a network that most people will never have access to on their own.</div>
+      <div style="font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6;">Anyone can call themselves a financial advisor. We spent years building the Align Network of Financial Advisors — one most people will never have access to on their own.</div>
       <div style="text-align:center;margin-bottom:0.5rem;">
         <div style="font-size:52px;font-weight:600;color:#1a3a5c;line-height:1;">95%</div>
-        <div style="font-size:13px;color:#666;margin-top:4px;">of applicants don't make our network.</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">of applicants don't make the Align Network.</div>
       </div>
       <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Proven client experience</div><div class="vetting-desc">Advisors with a demonstrated track record of guiding real clients through real financial decisions.</div></div></div>
       <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Professional designation required</div><div class="vetting-desc">CFP®, CFA, CPA, or equivalent — proven expertise, not just a license.</div></div></div>
       <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Clean regulatory record</div><div class="vetting-desc">Zero complaints, zero disciplinary actions — it's our baseline, not a bonus.</div></div></div>
+      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Held to the standard every year</div><div class="vetting-desc">Getting into the Align Network isn't a one-time bar — advisors are reviewed annually to stay in it.</div></div></div>
       <div style="font-size:14px;font-weight:500;color:#1a1a1a;margin:1.25rem 0 6px;">Someone for everyone.</div>
       <div class="segment-row">
         <div class="seg-card"><div class="seg-icon">🌱</div><div class="seg-title">Just starting out</div><div class="seg-desc">Debt, first job, building savings</div></div>
         <div class="seg-card"><div class="seg-icon">🏠</div><div class="seg-title">Building &amp; buying</div><div class="seg-desc">Home, family, growing wealth</div></div>
         <div class="seg-card"><div class="seg-icon">🌅</div><div class="seg-title">Near retirement</div><div class="seg-desc">Wealth preservation, income planning</div></div>
       </div>
-      <button class="btn-p" onclick="go(7)">See what this means for you →</button>
-    </div>
-  </div>
-
-
-  <!-- ─────────────────────────────────────────────
-       S7 — NEIGHBOR CHART
-  ───────────────────────────────────────────── -->
-  <div class="screen" id="s7">
-    <div class="nav-row"><button class="back" onclick="go(6)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
-    <div class="card">
-      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">Meet your neighbor.</div>
-      <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Same street. Same income. Same mortgage. Same expenses. Exact same financial situation — with one difference.</div>
-      <div class="neighbor-intro">
-        <div class="neighbor-houses">
-          <div class="house"><div style="font-size:36px;line-height:1;">🏠</div><div style="font-size:11px;font-weight:500;color:#c8a84b;margin-top:4px;">You</div><div style="font-size:10px;color:#aaa;">No advisor</div></div>
-          <div style="font-size:11px;color:#aaa;padding-bottom:12px;">vs</div>
-          <div class="house"><div style="font-size:36px;line-height:1;">🏠</div><div style="font-size:11px;font-weight:500;color:#1a3a5c;margin-top:4px;">Your neighbor</div><div style="font-size:10px;color:#aaa;">Has an advisor</div></div>
-        </div>
-        <div style="font-size:12px;color:#666;text-align:center;">Starting with the same $100,000. Fast forward 25 years.</div>
-      </div>
-      <div class="chart-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#1a3a5c;"></div>Your neighbor (with advisor)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#c8a84b;"></div>You (without advisor)</div>
-      </div>
-      <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
-      <div class="gap-badge">
-        <div style="font-size:13px;color:#3b6d11;font-weight:500;">That gap is <span id="diffDisplay">—</span>.</div>
-        <div style="font-size:12px;color:#3b6d11;margin-top:3px;">Same life. Same paycheck. Different decision.</div>
-      </div>
-      <div class="covered-row">
-        <div><div style="font-size:12px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">A financial plan typically costs</div><div class="price-strike">$2,500 – $3,500</div></div>
-        <div style="text-align:right;"><div style="font-size:11px;color:#666;margin-bottom:3px;">Your cost</div><div style="font-size:18px;font-weight:600;color:#27500a;">$0</div><div style="background:#eaf3de;color:#27500a;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px;margin-top:3px;display:inline-block;">Covered by your employer</div></div>
-      </div>
-      <div style="font-size:15px;font-weight:500;color:#1a3a5c;text-align:center;margin:0.75rem 0 0.5rem;">We think you’ll see it the way we do — and that it’s well worth your time.</div>
       <button class="btn-p" onclick="goTransition()">Let’s build my plan →</button>
-      <div class="hypothetical">* Hypothetical illustration only. Assumes $100,000 starting balance, 7% annual return without advisor and 10% with. Actual results will vary.</div>
-      <div class="citation">Source: Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024.</div>
     </div>
   </div>
 
@@ -715,8 +756,11 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         </div>
         <div style="font-size:12px;color:#666;margin-top:8px;">Every smart financial move earns more. This is just the beginning.</div>
       </div>
-      <!-- DEV NOTE: Link below should go to the full employee dashboard in the platform -->
-      <button class="btn-p" onclick="go(1)" style="margin-top:1rem;">← Start over (prototype)</button>
+      <!-- Auto-redirect status — shown right before handoff to the live dashboard prototype -->
+      <div id="dashRedirect" style="display:none;margin-top:1rem;text-align:center;font-size:12px;color:#888;">Opening your dashboard…</div>
+
+      <!-- DEV NOTE: this now hands off automatically to the live dashboard prototype (assetalign-dashboard.netlify.app) — see goToDashboard(). Kept as manual fallback / prototype-testing exit. -->
+      <button class="btn-p" id="s14StartOver" onclick="go(1)" style="margin-top:1rem;">← Start over (prototype)</button>
     </div>
   </div>
 
@@ -728,6 +772,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
      calendly.event_scheduled postMessage event.
      Fixed position — floats above the spotlight element.
 ═════════════════════════════════════════════════════ -->
+<svg id="tutArrowSvg" style="position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:1003;display:none;"></svg>
 <div id="tutorialCard" class="tutorial-card" style="display:none;">
   <div class="tut-dots" id="tutDots"></div>
   <div class="tut-title" id="tutTitle"></div>
@@ -851,6 +896,16 @@ const finchProfile = {
   middle_name: 'J.',
   last_name:   'Mitchell',
   dob:         '1988-03-14',       // Finch format: YYYY-MM-DD
+  home_state:  'MA',               // POST /individual — mailing address on file for payroll/W-2 purposes.
+                                    // NOT a DMV/vehicle-registration lookup — just reuses address data
+                                    // AssetAlign already legitimately has. Used to prefill the "state
+                                    // you're insuring in" field on the Zebra nudge — see dashboard-v2.
+  home_zip:    '02108',             // Same POST /individual mailing address, zip portion — Finch's real
+                                    // response includes full street/city/state/zip; this mock only used
+                                    // state until now. Zip isn't on Zebra's confirmed-required field list
+                                    // (state is), so not wired into the nudge form — just captured and
+                                    // shown on S2 for now. Add a nudge-form zip field later if a partner
+                                    // (Zebra or otherwise) actually needs zip-level precision.
   // POST /employer/employment
   employer_name:    'Acme Corporation',
   start_date:       '2017-04-01',  // Finch format: YYYY-MM-DD
@@ -858,6 +913,11 @@ const finchProfile = {
   // From employer config in Supabase (not always available via Finch)
   retirement_enrolled: true,
   retirement_type:     '401(k)',
+  // From the employee's own AssetAlign account (email/SSO login) — NOT a
+  // Finch field; Finch's individual/employment endpoints don't return
+  // personal email. Shown on S14 so the calendar invite confirmation names
+  // where to actually look for it.
+  email: 'sarah.mitchell@acmecorp.com',
 };
 
 function initFromFinch(){
@@ -865,6 +925,20 @@ function initFromFinch(){
 
   // Employer display name — prefer URL param so email link can override
   const employerDisplay = urlParams.get('employer_name') || p.employer_name;
+
+  // Tester name — prefer URL params so a personalized drill link can override the mock Finch profile
+  const firstNameOverride = urlParams.get('first_name');
+  const lastNameOverride  = urlParams.get('last_name');
+  const displayFirst  = firstNameOverride || p.first_name;
+  const displayMiddle = firstNameOverride ? '' : p.middle_name;
+  const displayLast   = lastNameOverride || p.last_name;
+
+  // S14: name which email the calendar invite actually went to, so the
+  // "look for a calendar invite" line points somewhere concrete instead of
+  // a vague "your inbox."
+  const displayEmail = urlParams.get('email') || p.email;
+  const schedEmailEl = document.getElementById('dashScheduledEmail');
+  if(schedEmailEl) schedEmailEl.textContent = displayEmail;
 
   // S1: inject employer name into welcome copy
   const s1el = document.getElementById('s1EmployerName');
@@ -880,13 +954,37 @@ function initFromFinch(){
   const dobLabel = dobDate.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
 
   // S2: populate fields
-  document.getElementById('f_name').textContent      = [p.first_name, p.middle_name, p.last_name].filter(Boolean).join(' ');
+  document.getElementById('f_name').textContent      = [displayFirst, displayMiddle, displayLast].filter(Boolean).join(' ');
   document.getElementById('f_dob').textContent       = dobLabel;
+  document.getElementById('f_zip').textContent       = urlParams.get('zip') || p.home_zip;
   document.getElementById('f_employer').textContent  = employerDisplay;
   document.getElementById('f_years').textContent     = yrsLabel;
   document.getElementById('f_retirement').innerHTML  = p.retirement_enrolled
     ? `${p.retirement_type} enrolled <span class="badge-g">Active</span>`
     : `No plan on file <span class="badge-a">Check with HR</span>`;
+}
+
+// "Something looks wrong" used to just continue to S3 like the "looks
+// correct" button — same destination either way, so correcting anything
+// was never actually possible. Now it turns the five fields into real
+// editable inputs instead. Prototype-only: typed corrections aren't
+// persisted anywhere (a real build would PATCH them back to Finch/HRIS or
+// flag the mismatch for HR review) — this just lets someone see and fix an
+// obviously-wrong field before moving on, rather than being stuck.
+function enableFieldEditing(){
+  ['f_name','f_dob','f_zip','f_employer','f_years','f_retirement'].forEach(id=>{
+    const el = document.getElementById(id);
+    const currentText = el.textContent.trim();
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = id;
+    input.className = 'fval-input';
+    input.value = currentText;
+    el.replaceWith(input);
+  });
+  document.getElementById('s2ConfirmBtn').style.display = 'none';
+  document.getElementById('s2WrongBtn').style.display = 'none';
+  document.getElementById('s2SaveBtn').style.display = 'block';
 }
 
 // Run on load — in production, wait for backend to return Finch data before calling this
@@ -898,6 +996,12 @@ document.addEventListener('DOMContentLoaded', initFromFinch);
 let chartInstance = null, selectedPriority = 'home', dragSrc = null;
 let selectedAltId = null, currentFilter = 'all';
 let schedulingAdvisor = null; // advisor shown on S12
+let selectedMarital = null; // captured from the S9 marital-status question — see goToDashboard()
+let selectedBalance401k = null; // captured from S9 — collected for context, NOT counted as billable/manageable AUM — see goToDashboard()
+let selectedBalanceIRA = null; // captured from S9 — see goToDashboard() + bracketToMidpoint()
+let selectedSavingsBalance = null; // captured from S9 — see goToDashboard() + bracketToMidpoint()
+let calViewMonth = null; // mock Calendly widget — month currently shown
+let calSelectedDate = null; // mock Calendly widget — date picked before showing times
 
 const priorityLabels = {debt:'Pay down debt',home:'Buy a home',invest:'Build wealth',retire:'Retire comfortably',protect:'Protect my family'};
 const goalMatchLabels = {home:'home buying',debt:'debt elimination',invest:'wealth building',retire:'retirement planning',protect:'family protection'};
@@ -910,7 +1014,7 @@ const allPriorities = [
 ];
 const focusContent = {
   debt:{icon:'💳',title:"Great. Let's tackle that debt.",body:"Carrying debt is one of the biggest drags on long-term wealth. We'll build your experience around eliminating it efficiently."},
-  home:{icon:'🏠',title:"Great. Let's focus on buying a home.",body:"That's a meaningful goal — and one we're built to help you reach."},
+  home:{icon:'🏠',title:"Great. Let's focus on this goal.",body:"Let's make smart decisions now to put you in a good spot for when you're ready — and when you are, we have mortgage partners with great rates ready to help."},
   invest:{icon:'📈',title:"Great. Let's grow your wealth.",body:"Building long-term wealth is about consistency and smart decisions."},
   retire:{icon:'🌅',title:"Great. Let's secure your retirement.",body:"Retirement readiness is built over time — and the best time to optimize is now."},
   protect:{icon:'🛡️',title:"Great. Let's protect what matters most.",body:"Making sure your family is covered is one of the most important financial decisions you can make."},
@@ -921,6 +1025,32 @@ const allQuestions = {
     {id:'own_home',label:'Do you currently own a home?',show:()=>true,opts:['Yes','No'],autoVal:(p)=>p==='home'?'No':null,autoNote:(p)=>p==='home'?'Auto-answered based on your goal':null},
     {id:'emergency',label:'Do you have an emergency fund covering 3–6 months of expenses?',show:()=>true,opts:['Yes, fully funded','Partially funded','Not yet'],autoVal:null,autoNote:null},
     {id:'retire_contrib',label:'Are you currently contributing to a retirement account?',show:()=>true,opts:['Yes, maximizing','Yes, contributing some','Not yet'],autoVal:()=>'Yes, contributing some',autoNote:()=>'Based on your 401(k) enrollment'},
+    // Dual-purpose: useful for general financial/estate planning context (not
+    // insurance-specific), so it belongs in the general questionnaire rather
+    // than a partner-specific form. Answer is captured (see renderQ below) and
+    // passed through goToDashboard() so it's never asked a second time.
+    {id:'marital',label:"What's your marital status?",show:()=>true,opts:['Single','Married','Divorced','Widowed'],autoVal:null,autoNote:null},
+    // Bracketed ranges, never exact figures — feeds the dashboard's credit
+    // projection with a real starting balance instead of the same flat $250k
+    // illustrative example for everyone. Every option here is skippable like
+    // the rest of S9.
+    //
+    // 401(k)/IRA split (2026-09-02, per Alex): advisors generally can't
+    // charge (bill AUM fees, actively manage) on assets sitting in an active
+    // employer-sponsored 401(k) — those stay in the plan's own investment
+    // menu/recordkeeper. IRAs (incl. old-employer 401(k)s already rolled
+    // over) and brokerage/savings ARE assets an advisor can actually manage
+    // and bill on. A single combined "retirement holdings (401k, IRA, etc.)"
+    // question conflated the two — someone with $200k locked in an active
+    // 401k and $0 elsewhere would look like a $200k prospect to a matched
+    // advisor who in reality can't bill a cent of it, risking bad matches
+    // once real advisor minimum-AUM requirements are in play. Split into two
+    // questions so the "assets under advisement" figure used for the credit
+    // projection (and any future real matching/minimum-AUM logic) only
+    // counts what's actually manageable. See goToDashboard()'s balance calc.
+    {id:'balance_401k',label:'How would you estimate your current 401(k) or employer retirement plan balance?',show:()=>true,opts:['None yet','Under $10,000','$10,000 – $50,000','$50,000 – $150,000','$150,000 – $350,000','$350,000+','Prefer not to say'],autoVal:null,autoNote:null},
+    {id:'balance_ira',label:'How would you estimate your IRA or old 401(k) balances (outside your current employer)?',show:()=>true,opts:['None yet','Under $10,000','$10,000 – $50,000','$50,000 – $150,000','$150,000 – $350,000','$350,000+','Prefer not to say'],autoVal:null,autoNote:null},
+    {id:'savings_balance',label:'How would you estimate your savings and investment holdings (outside retirement)?',show:()=>true,opts:['Under $5,000','$5,000 – $25,000','$25,000 – $75,000','$75,000 – $200,000','$200,000+','Prefer not to say'],autoVal:null,autoNote:null},
   ],
   behavioral:[
     {id:'market',label:"When markets drop, what's your gut reaction?",show:()=>true,opts:['Sell to avoid losses','Do nothing and wait it out','Buy more — it\'s a sale'],autoVal:null,autoNote:null},
@@ -938,7 +1068,7 @@ const sectionMap = {
 // ═══════════════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════════════
-function go(n){
+function go(n, fromPopState){
   document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n-1));
   document.querySelectorAll('.ps').forEach((p,i)=>{
     p.classList.remove('done','active');
@@ -947,12 +1077,26 @@ function go(n){
   });
   document.getElementById('plabel').textContent = sectionMap[n]||'';
   if(n===3) buildGrid();
-  if(n===7) setTimeout(buildChart,300);
+  if(n===6) setTimeout(buildChart,300);
   if(n===11) renderPrimaryAdvisor();
   if(n===12) showScheduleScreen(schedulingAdvisor || advisorArchive[0]);
   if(n===13) renderAltAdvisors('all');
   window.scrollTo(0,0);
+  // Push a real browser-history entry per screen so the browser's own Back
+  // button steps back one screen at a time instead of leaving the app
+  // entirely (previously there was only the in-app "← Back" link — the
+  // physical/browser Back button had no history to act on, so it just
+  // exited the page). Skipped when go() is itself responding to a
+  // popstate event, or it'd push a duplicate entry and break Forward too.
+  if(!fromPopState) history.pushState({screen:n}, '', '#s'+n);
 }
+window.addEventListener('popstate', function(e){
+  go((e.state && e.state.screen) || 1, true);
+});
+// Baseline entry for screen 1, so the very first Back press (from screen 2)
+// has somewhere in-app to land instead of exiting straight to whatever
+// page was open before this one.
+history.replaceState({screen:1}, '', '#s1');
 
 function goTransition(){
   document.getElementById('prioritySubLabel').textContent = priorityLabels[selectedPriority]+' — locked in';
@@ -1008,20 +1152,157 @@ function showScheduleScreen(advisor){
       window.Calendly.initInlineWidgets();
     }
   } else {
-    // ── PLACEHOLDER — NO CALENDLY LINK SET ───────────────
-    var _slots=['Tomorrow · 12:30 PM','Tomorrow · 5:15 PM','Thu · 9:00 AM','Thu · 1:00 PM','Fri · 3:30 PM','Mon · 11:00 AM'];
-    area.innerHTML =
-      '<div style="font-size:12.5px;color:#666;margin-bottom:10px;">Pick a time that works — '+advisor.name.split(' ')[0]+' will confirm by email:</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'+
-      _slots.map(function(s){return '<button onclick="confirmMock(this)" style="padding:12px 8px;border:1.5px solid #d0d9e2;border-radius:10px;background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:#1a3a5c;cursor:pointer;">'+s+'</button>';}).join('')+
-      '</div>';
+    // ── MOCK CALENDLY-STYLE WIDGET — NO CALENDLY LINK SET ───
+    // Not a real Calendly embed/account — just visually modeled on
+    // Calendly's own booking widget (host header, month calendar,
+    // time-slot list, timezone line) so this reads close to the real
+    // product. Picking a time still just calls completeBooking(),
+    // same as before — no functional change, look only.
+    calSelectedDate = null;
+    const _today = new Date();
+    calViewMonth = new Date(_today.getFullYear(), _today.getMonth(), 1);
+    const hostAvatar = advisor.photo
+      ? `<img src="${advisor.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="${advisor.name}">`
+      : `<div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:${advisor.avatarBg};color:${advisor.avatarColor};">${advisor.initials}</div>`;
+    area.innerHTML = `
+      <div class="cal-widget">
+        <div class="cal-widget-host">
+          ${hostAvatar}
+          <div>
+            <div class="cal-widget-host-name">${advisor.name}</div>
+            <div class="cal-widget-title">Let's find a time that works for you</div>
+          </div>
+        </div>
+        <div class="cal-widget-meta">
+          <div>🕐 30 min</div>
+          <div>💻 Web conferencing details provided upon confirmation</div>
+        </div>
+        <div class="cal-widget-body" id="calBody"></div>
+      </div>
+    `;
+    renderCalMonth();
   }
 }
 
-function confirmMock(el){
-  document.querySelectorAll('#calendlyArea button').forEach(function(b){b.style.borderColor='#d0d9e2';b.style.background='#fff';b.style.color='#1a3a5c';});
-  el.style.borderColor='#27500a';el.style.background='#eaf3de';el.style.color='#27500a';
-  setTimeout(function(){go(14);},450);
+// ── Mock Calendly widget helpers ──────────────────────────
+function calAvailDates(){
+  // Weekdays only, starting tomorrow — just enough to populate a
+  // couple of calendar months for the visual.
+  const dates = [];
+  let d = new Date();
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate() + 1);
+  while(dates.length < 15){
+    const dow = d.getDay();
+    if(dow !== 0 && dow !== 6) dates.push(new Date(d));
+    d.setDate(d.getDate() + 1);
+  }
+  return dates;
+}
+function calDateKey(d){ return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
+
+function renderCalMonth(){
+  const avail = calAvailDates();
+  const availKeys = new Set(avail.map(calDateKey));
+  const minMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  const lastAvail = avail[avail.length - 1];
+  const maxMonth = new Date(lastAvail.getFullYear(), lastAvail.getMonth(), 1);
+
+  const y = calViewMonth.getFullYear(), m = calViewMonth.getMonth();
+  const monthLabel = calViewMonth.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+  const firstDow = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let cells = '';
+  for(let i=0;i<firstDow;i++) cells += '<div></div>';
+  for(let day=1; day<=daysInMonth; day++){
+    const cellDate = new Date(y, m, day);
+    const key = calDateKey(cellDate);
+    const isToday = cellDate.getTime() === today.getTime();
+    const isAvail = availKeys.has(key);
+    cells += `<button class="cal-day${isAvail?' avail':''}${isToday?' today':''}" ${isAvail?`onclick="selectCalDate('${key}')"`:'disabled'}>${day}</button>`;
+  }
+
+  const prevDisabled = (y === minMonth.getFullYear() && m === minMonth.getMonth());
+  const nextDisabled = (y === maxMonth.getFullYear() && m === maxMonth.getMonth());
+
+  document.getElementById('calBody').innerHTML = `
+    <div class="cal-month-nav">
+      <button class="cal-month-arrow" ${prevDisabled?'disabled':''} onclick="navCalMonth(-1)">‹</button>
+      <div class="cal-month-label">${monthLabel}</div>
+      <button class="cal-month-arrow" ${nextDisabled?'disabled':''} onclick="navCalMonth(1)">›</button>
+    </div>
+    <div class="cal-weekdays">
+      <div class="cal-weekday">S</div><div class="cal-weekday">M</div><div class="cal-weekday">T</div><div class="cal-weekday">W</div><div class="cal-weekday">T</div><div class="cal-weekday">F</div><div class="cal-weekday">S</div>
+    </div>
+    <div class="cal-days">${cells}</div>
+    <div class="cal-tz-row">🌐 Eastern Time - US &amp; Canada</div>
+  `;
+}
+
+function navCalMonth(delta){
+  calViewMonth = new Date(calViewMonth.getFullYear(), calViewMonth.getMonth() + delta, 1);
+  renderCalMonth();
+}
+
+function selectCalDate(key){
+  const p = key.split('-').map(Number);
+  calSelectedDate = new Date(p[0], p[1], p[2]);
+  renderCalTimes();
+}
+
+function renderCalTimes(){
+  const label = calSelectedDate.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
+  const times = ['9:00am','9:30am','10:00am','10:30am','11:00am','1:00pm','1:30pm','2:00pm','2:30pm','3:00pm','3:30pm','4:00pm'];
+  document.getElementById('calBody').innerHTML = `
+    <button class="cal-times-back" onclick="backToCalMonth()">‹ ${label}</button>
+    <div class="cal-times-list">
+      ${times.map(t => `<button class="cal-time-btn" onclick="confirmCalTime(this)">${t}</button>`).join('')}
+    </div>
+  `;
+}
+
+function backToCalMonth(){
+  calSelectedDate = null;
+  renderCalMonth();
+}
+
+function confirmCalTime(el){
+  document.querySelectorAll('.cal-time-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  setTimeout(completeBooking, 450);
+}
+
+// Shared by both the mock time-slot picker above and the real Calendly
+// postMessage listener below — takes the user to S14 for a brief static
+// confirmation beat, then straight to the real dashboard.
+//
+// Used to run S14's own 3-step tutorial (dashScheduled → dashCredits →
+// dashServices) against this screen's mocked-up "dashboard" content (a
+// static credits box, blurred service rows) BEFORE ever redirecting —
+// meaning two separate tutorials played back to back against two
+// different backgrounds, with a jarring swap in between. Alex: "it should
+// take us right to the dashboard and a tutorial... this whole thing moved
+// to the flow with dashboard in the background." Now completeBooking()
+// goes straight to goToDashboard() — S14 is shown just long enough to
+// read the "Session scheduled"/"25 Align Credits" confirmation and
+// goToDashboard()'s own "Opening your dashboard…" message before the
+// real transition, and the (single) tutorial the user actually experiences
+// is the real dashboard's own welcome tour, run against the real
+// dashboard the whole time. S14's own tutorial system (tutSteps,
+// showTutStep, startTutorial, the hand-drawn-arrow positioning, etc.)
+// is left in place but now dormant/unreferenced — not deleted, in case
+// this direction gets revisited — rather than ripping out a full session's
+// worth of work on a same-day judgment call.
+function completeBooking(){
+  fromCalendly = true;
+  // Used to briefly show S14 (a static "Session scheduled"/"25 Align
+  // Credits" confirmation beat) before handing off — Alex: "its still
+  // showing the screen really quick after they pick the time.. cut that
+  // out.. i don't want to see it." Now skips straight to goToDashboard()
+  // with no intermediate screen at all.
+  goToDashboard();
 }
 
 // ═══════════════════════════════════════════════════
@@ -1255,7 +1536,20 @@ function renderQ(q,p){
     const btn = document.createElement('button');
     btn.className = 'q-opt'+(autoVal===o?' auto-selected':'');
     btn.innerHTML = o+(autoVal===o&&autoNote?'<span class="auto-tag">'+autoNote+'</span>':'');
-    if(!autoVal) btn.onclick = function(){ opts.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('selected')); this.classList.add('selected'); };
+    // Always clickable, even when we pre-filled a best-guess answer — a
+    // pre-selected default (e.g. "No" on "do you own a home" for someone
+    // whose goal is buying one) can be wrong (they might already own a
+    // vacation home), so the person needs to be able to override it, not
+    // just see it locked in.
+    btn.onclick = function(){
+      opts.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('selected','auto-selected'));
+      const tag = opts.querySelector('.auto-tag'); if(tag) tag.remove();
+      this.classList.add('selected');
+      if(q.id==='marital') selectedMarital = o;
+      if(q.id==='balance_401k') selectedBalance401k = o;
+      if(q.id==='balance_ira') selectedBalanceIRA = o;
+      if(q.id==='savings_balance') selectedSavingsBalance = o;
+    };
     opts.appendChild(btn);
   });
   block.appendChild(opts);
@@ -1329,15 +1623,13 @@ function buildChart(){
     },
     plugins:[{id:'arrow',afterDraw(chart){
       const{ctx,scales:{x,y}}=chart;
-      const xE=x.getPixelForValue(years),yA=y.getPixelForValue(finalAdv),yD=y.getPixelForValue(finalDIY),mY=(yA+yD)/2;
+      const xE=x.getPixelForValue(years),yA=y.getPixelForValue(finalAdv),yD=y.getPixelForValue(finalDIY);
       ctx.save();
       ctx.strokeStyle='#3b6d11';ctx.fillStyle='#3b6d11';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);
       ctx.beginPath();ctx.moveTo(xE+4,yA);ctx.lineTo(xE+4,yD);ctx.stroke();ctx.setLineDash([]);
       const aw=5,ah=7;
       ctx.beginPath();ctx.moveTo(xE+4,yA-2);ctx.lineTo(xE+4-aw,yA+ah);ctx.lineTo(xE+4+aw,yA+ah);ctx.closePath();ctx.fill();
       ctx.beginPath();ctx.moveTo(xE+4,yD+2);ctx.lineTo(xE+4-aw,yD-ah);ctx.lineTo(xE+4+aw,yD-ah);ctx.closePath();ctx.fill();
-      ctx.font='bold 11px -apple-system,sans-serif';ctx.fillStyle='#27500a';ctx.textAlign='left';ctx.fillText(fmt(diff),xE+10,mY-7);
-      ctx.font='10px -apple-system,sans-serif';ctx.fillStyle='#3b6d11';ctx.fillText('gap',xE+10,mY+7);
       ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='right';
       ctx.fillStyle='#1a3a5c';ctx.fillText('Neighbor '+fmt(finalAdv),xE-8,yA-10);
       ctx.fillStyle='#856a1e';ctx.fillText('You '+fmt(finalDIY),xE-8,yD-10);
@@ -1354,38 +1646,69 @@ function buildChart(){
 let fromCalendly = false;
 let tutStep = 0;
 let tutActiveEl = null;
+let tutArrowTimer1 = null, tutArrowTimer2 = null;
+let tutScrollLocked = false;
+
+// Scrolling manually during the tour left the hand-drawn arrow stranded —
+// it's drawn once per step from getBoundingClientRect() snapshots, so a
+// manual scroll doesn't move it with the page. Locking scroll and routing
+// every step change through the card's own CTA (which does its own
+// controlled scrollIntoView) means the arrow is always redrawn in sync.
+function blockTutScroll(e) { e.preventDefault(); }
+function blockTutScrollKeys(e) {
+  if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) e.preventDefault();
+}
+function tutScrollLock() {
+  if (tutScrollLocked) return;
+  tutScrollLocked = true;
+  window.addEventListener('wheel', blockTutScroll, { passive: false });
+  window.addEventListener('touchmove', blockTutScroll, { passive: false });
+  window.addEventListener('keydown', blockTutScrollKeys);
+}
+function tutScrollUnlock() {
+  if (!tutScrollLocked) return;
+  tutScrollLocked = false;
+  window.removeEventListener('wheel', blockTutScroll);
+  window.removeEventListener('touchmove', blockTutScroll);
+  window.removeEventListener('keydown', blockTutScrollKeys);
+}
 
 const tutSteps = [
   {
     id: 'dashScheduled',
-    title: 'Session confirmed! 🎉',
-    body: "You're all set. Your advisor already has your goals and priorities — look for a calendar invite in your inbox.",
+    title: "You're booked! 🎉",
+    body: "This is your new home base. Let's take a quick look around before your first session.",
     cta: 'Show me around →',
     skip: 'Skip tour'
   },
   {
     id: 'dashCredits',
     title: 'Your first credits',
-    body: 'You just earned 25 credits for completing your onboarding. Schedule your first advisor session to earn 25 more — credits vest after 12 months.',
+    body: "These are yours to use across the AssetAlign marketplace — you'll earn more with every meaningful step, starting with your first advisor session.",
     cta: 'What\'s next →',
     skip: null
   },
   {
     id: 'dashServices',
     title: 'Your full platform',
-    body: 'Financial advice, tax prep, and estate planning — all through your employer, at zero cost. More features unlock as you engage.',
+    body: 'We aggregate the best solutions across every financial need and find the best opportunities for you. Imagine your credits covering your car insurance. Buying your next home? Imagine them reducing your closing costs.',
     cta: 'I\'m ready →',
     skip: null
   }
 ];
 
 function startTutorial(){
-  document.getElementById('dashScheduled').style.display = 'block';
   showTutStep(0);
 }
 
 function showTutStep(n){
+  tutScrollLock();
   if(tutActiveEl){ tutActiveEl.classList.remove('tutorial-target-active'); tutActiveEl = null; }
+  // Cancel any positioning/arrow-draw still pending from the previous step
+  // — without this, advancing/ending the tour quickly (before the delayed
+  // draw fires) could let a stale arrow render after the tour had already
+  // moved on or closed.
+  clearTimeout(tutArrowTimer1); clearTimeout(tutArrowTimer2);
   if(n >= tutSteps.length){ endTutorial(); return; }
 
   const step = tutSteps[n];
@@ -1393,7 +1716,13 @@ function showTutStep(n){
   if(el){
     el.classList.add('tutorial-target-active');
     tutActiveEl = el;
-    setTimeout(()=>el.scrollIntoView({behavior:'smooth', block:'center'}), 80);
+    tutArrowTimer1 = setTimeout(()=>{
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      // Card is fixed-bottom by default; if that would sit on top of the
+      // element it's supposed to be pointing at (e.g. the credits box on
+      // S14), move it above the target instead once the scroll settles.
+      tutArrowTimer2 = setTimeout(()=>positionTutorialCard(el), 420);
+    }, 80);
   }
 
   document.getElementById('tutDots').innerHTML = tutSteps.map((_,i)=>
@@ -1411,11 +1740,203 @@ function showTutStep(n){
   tutStep = n;
 }
 
+// Docks the tutorial card in the gutter beside the narrow content column
+// (with a hand-drawn arrow pointing at the spotlighted element) whenever
+// there's enough room for it — this reads more clearly as "look over there"
+// than a card floating on top of the page. Falls back to the original
+// stacked-above/below-target layout (no arrow) when the viewport is too
+// narrow for a real gutter, e.g. mobile widths.
+function positionTutorialCard(target){
+  const card = document.getElementById('tutorialCard');
+  const arrowSvg = document.getElementById('tutArrowSvg');
+  const wrapEl = document.querySelector('.wrap');
+  const wrapRect = wrapEl.getBoundingClientRect();
+  const gutterLeft = wrapRect.left;
+  const gutterRight = window.innerWidth - wrapRect.right;
+  const sideCardWidth = 300;
+  const canDockSide = Math.max(gutterLeft, gutterRight) >= sideCardWidth + 40;
+
+  if(!canDockSide){
+    card.classList.remove('tutorial-card-side');
+    arrowSvg.style.display = 'none';
+    card.style.left = '50%';
+    card.style.right = 'auto';
+    card.style.transform = 'translateX(-50%)';
+    card.style.top = '';
+    card.style.bottom = '28px';
+
+    const targetRect = target.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const overlaps = targetRect.bottom > cardRect.top && targetRect.top < cardRect.bottom;
+    if(!overlaps) return;
+
+    const margin = 16;
+    const spaceAbove = targetRect.top;
+    const spaceBelow = window.innerHeight - targetRect.bottom;
+    // 'auto', not '' — clearing to '' just falls back to the stylesheet's own
+    // bottom:28px rule (still active), which combined with an explicit top
+    // stretches the card to fill the gap between them instead of sizing to
+    // content. 'auto' is what actually removes bottom positioning.
+    if(spaceBelow > cardRect.height + margin){
+      card.style.bottom = 'auto';
+      card.style.top = (targetRect.bottom + margin) + 'px';
+    } else if(spaceAbove > cardRect.height + margin){
+      card.style.bottom = 'auto';
+      card.style.top = Math.max(margin, targetRect.top - cardRect.height - margin) + 'px';
+    }
+    // else: neither side has room (very short viewport) — leave it fixed-bottom,
+    // the least-bad option since the alternative is going off-screen entirely.
+    return;
+  }
+
+  // ── Side-docked mode ──────────────────────────────────────────
+  card.classList.add('tutorial-card-side');
+  card.style.transform = 'none';
+  const onRight = gutterRight >= gutterLeft;
+  const edgeMargin = 20;
+  if(onRight){
+    const left = Math.min(wrapRect.right + 28, window.innerWidth - sideCardWidth - edgeMargin);
+    card.style.left = left + 'px';
+    card.style.right = 'auto';
+  } else {
+    const left = Math.max(wrapRect.left - 28 - sideCardWidth, edgeMargin);
+    card.style.left = left + 'px';
+    card.style.right = 'auto';
+  }
+
+  const targetRect = target.getBoundingClientRect();
+  const cardHeight = card.getBoundingClientRect().height || 180;
+  const margin = 20;
+  let top = targetRect.top + targetRect.height / 2 - cardHeight / 2;
+  top = Math.max(margin, Math.min(top, window.innerHeight - cardHeight - margin));
+  card.style.bottom = 'auto';
+  card.style.top = top + 'px';
+
+  requestAnimationFrame(() => {
+    drawTutArrow(card.getBoundingClientRect(), target.getBoundingClientRect());
+  });
+}
+
+// Hand-drawn-style arrow (a bowed, slightly doubled-up curve rather than a
+// straight ruler line — reads as a marker annotation, not a diagram) from
+// the side-docked tutorial card to whatever element it's spotlighting.
+function drawTutArrow(cardRect, targetRect){
+  const svg = document.getElementById('tutArrowSvg');
+  const cardOnLeft = cardRect.left < targetRect.left;
+
+  // The "stop short" margin is capped by the *actual* clearance between the
+  // card and target, minus a small buffer — a flat 20px margin assumed real
+  // room was always there, and when the two sit almost back-to-back it
+  // overshot straight past the card's own edge, producing a nonsensical loop
+  // instead of a short stop-short gap.
+  const availableGap = cardOnLeft ? (targetRect.left - cardRect.right) : (cardRect.left - targetRect.right);
+  const margin = Math.max(0, Math.min(20, availableGap - 2));
+  const startX = cardOnLeft ? cardRect.right : cardRect.left;
+  const startY = cardRect.top + cardRect.height * 0.4;
+  const endX = cardOnLeft ? targetRect.left - margin : targetRect.right + margin;
+  const targetCenterY = targetRect.top + targetRect.height / 2;
+  const endY = Math.min(Math.max(targetCenterY, targetRect.top + 10), targetRect.bottom - 10);
+
+  // Bow the curve along the true perpendicular of the start→end line (not just
+  // a flat vertical offset — that only reads as a gentle arc when the line is
+  // mostly horizontal, and warps into a pinched/funnel shape at other angles).
+  const dx = endX - startX, dy = endY - startY;
+  const dist = Math.hypot(dx, dy) || 1;
+  const perpX = -dy / dist, perpY = dx / dist;
+  const bow = Math.min(26, dist * 0.22) * (cardOnLeft ? 1 : -1);
+  const midX = (startX + endX) / 2 + perpX * bow;
+  const midY = (startY + endY) / 2 + perpY * bow;
+
+  const path = `M ${startX} ${startY} Q ${midX} ${midY}, ${endX} ${endY}`;
+
+  const angle = Math.atan2(endY - midY, endX - midX);
+  const headLen = 10;
+  const a1x = endX - headLen * Math.cos(angle - 0.4);
+  const a1y = endY - headLen * Math.sin(angle - 0.4);
+  const a2x = endX - headLen * Math.cos(angle + 0.4);
+  const a2y = endY - headLen * Math.sin(angle + 0.4);
+
+  svg.innerHTML = `
+    <path d="${path}" fill="none" stroke="#e8c56a" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+    <polygon points="${endX},${endY} ${a1x},${a1y} ${a2x},${a2y}" fill="#e8c56a" opacity="0.9"/>
+  `;
+  svg.style.display = 'block';
+}
+
 function tutNext(){ showTutStep(tutStep + 1); }
 
 function endTutorial(){
+  tutScrollUnlock();
+  clearTimeout(tutArrowTimer1); clearTimeout(tutArrowTimer2);
   if(tutActiveEl){ tutActiveEl.classList.remove('tutorial-target-active'); tutActiveEl = null; }
   document.getElementById('tutorialCard').style.display = 'none';
+  document.getElementById('tutArrowSvg').style.display = 'none';
+  goToDashboard();
+}
+
+// One step further: after the tutorial walks them through S14, actually
+// take them to the live employee dashboard prototype (assetalign-dashboard.netlify.app)
+// instead of stopping at this mock screen.
+// Bracket → representative dollar midpoint, used to turn the S9 balance
+// questions into a rough total for the dashboard's credit projection.
+// 'Prefer not to say' and unanswered (null) both resolve to 0 — the
+// combined total in goToDashboard() only falls back to the fully
+// illustrative default when BOTH questions were left completely untouched.
+function bracketToMidpoint(answer){
+  const map = {
+    'None yet': 0, 'Under $10,000': 5000, '$10,000 – $50,000': 30000,
+    '$50,000 – $150,000': 100000, '$150,000 – $350,000': 250000, '$350,000+': 450000,
+    'Under $5,000': 2500, '$5,000 – $25,000': 15000, '$25,000 – $75,000': 50000,
+    '$75,000 – $200,000': 137500, '$200,000+': 275000,
+    'Prefer not to say': 0
+  };
+  return map[answer] || 0;
+}
+
+function goToDashboard(){
+  // Carry the priority picked in S3 (+ the resolved Finch first name, home
+  // state, S9 marital-status answer, and the 25-credit welcome bonus shown on
+  // this screen) into the dashboard so it reflects what was already set here
+  // instead of re-asking — including prefilling the Zebra nudge's "state"
+  // field and skipping a second marital-status ask. See v2's
+  // applyPersonalization() on assetalign-dashboard-v2.
+  const firstName = urlParams.get('first_name') || finchProfile.first_name;
+  const homeState = urlParams.get('home_state') || finchProfile.home_state;
+  // Age (not raw DOB) — enough for the "drivers your age" stat hook on the
+  // Zebra nudge without passing full birthdate through a URL.
+  const dobStr = urlParams.get('dob') || finchProfile.dob;
+  const dobForAge = new Date(dobStr + 'T00:00:00');
+  const today = new Date();
+  let age = today.getFullYear() - dobForAge.getFullYear();
+  const hadBirthdayThisYear = (today.getMonth() > dobForAge.getMonth()) ||
+    (today.getMonth() === dobForAge.getMonth() && today.getDate() >= dobForAge.getDate());
+  if(!hadBirthdayThisYear) age--;
+
+  const handoffParams = new URLSearchParams({
+    goal: selectedPriority,
+    name: firstName,
+    credits: 25,
+    state: homeState,
+    age: age
+  });
+  if(selectedMarital) handoffParams.set('marital', selectedMarital);
+  // Only send a real balance if at least one of the relevant questions was
+  // actually answered — if all were skipped entirely, leave it unset so the
+  // dashboard falls back to its own fully-illustrative default instead of
+  // showing a misleading $0 projection.
+  // Deliberately excludes selectedBalance401k — active 401(k) assets aren't
+  // billable/manageable by an outside advisor, so they don't belong in an
+  // "assets under advisement" figure. Only IRA + savings/investment balances
+  // (assets an advisor could actually take on) count here. See the dev note
+  // above the balance_401k/balance_ira questions in allQuestions.financial.
+  if(selectedBalanceIRA || selectedSavingsBalance){
+    const balance = bracketToMidpoint(selectedBalanceIRA) + bracketToMidpoint(selectedSavingsBalance);
+    handoffParams.set('balance', balance);
+  }
+
+  // No artificial delay — S14 no longer shows in between, so there's
+  // nothing on screen to hold for; go straight there.
+  window.location.href = 'https://assetalign-dashboard-v2.netlify.app/?' + handoffParams.toString();
 }
 
 // ═══════════════════════════════════════════════════
@@ -1427,27 +1948,18 @@ function endTutorial(){
 // ═══════════════════════════════════════════════════
 window.addEventListener('message', function(e){
   if(e.data && e.data.event === 'calendly.event_scheduled'){
-    fromCalendly = true;
-    go(14);
-    setTimeout(startTutorial, 450);
+    completeBooking();
   }
 });
 </script>
 <!-- ════ POINTS HIGHLIGHT (between questions s9 and advisor match s10) ════ -->
 <div id="sPoints">
-  <div class="sp-inner">
-    <div class="sp-eyebrow">A benefit from <span class="spEmp">your company</span></div>
-    <h2 class="sp-head"><span class="spEmp">Your company</span> has covered this for you — completely.</h2>
-    <div class="sp-value">
-      <div class="sp-vlabel">Out on your own, a plan like this runs</div>
-      <div class="sp-street">$2,500–$3,500</div>
-      <div class="sp-divider"></div>
-      <div class="sp-vlabel">Through <span class="spEmp">your company</span>, your price is</div>
-      <div class="sp-free-big">$0</div>
-    </div>
+  <div class="sp-inner card">
+    <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:10px;">You're almost there!</div>
     <p class="sp-fomo">This is the exact spot where most people stop — they mean to come back, and the financial stress just stays. <b>The old you would’ve closed this tab. Not today.</b></p>
-    <p class="sp-explain">All that’s left is to grab a time with your advisor — just a few seconds. The session itself happens later, whenever works for you.</p>
-    <button class="sp-btn" onclick="continuePoints()">Pick my time →</button>
+    <p class="sp-explain">Next, we’ll match you with a financial professional and find a time that works for you both — just a few seconds. The session itself happens later, whenever works for you.</p>
+    <p class="sp-match-note">We want to make sure we match you with exactly the right advisor for your situation — not just anyone available.</p>
+    <button class="sp-btn" onclick="continuePoints()">Find a time that works →</button>
   </div>
 </div>
 
@@ -1465,27 +1977,14 @@ window.addEventListener('message', function(e){
 </div>
 
 <style>
-  #sPoints{display:none;position:fixed;inset:0;z-index:9000;background:linear-gradient(170deg,#0d2438 0%,#16344f 60%,#0a3d6b 100%);color:#fff;overflow:auto;}
-  #sPoints.on{display:flex;align-items:center;justify-content:center;}
-  #sPoints .sp-inner{width:100%;max-width:430px;padding:34px 28px;text-align:center;}
-  #sPoints .sp-eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#34d27b;margin-bottom:22px;}
-  #sPoints .sp-coin{width:88px;height:88px;margin:0 auto 16px;border-radius:50%;background:radial-gradient(circle at 36% 30%,#ffe9a8,#e6bd5a 52%,#bb8a32);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(0,0,0,.45),inset 0 0 0 4px rgba(255,255,255,.22);animation:sp_spin 2.4s linear infinite;}
-  #sPoints .sp-coin span{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:42px;color:#7a5512;}
-  @keyframes sp_spin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
-  #sPoints .sp-amt{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:72px;line-height:1;color:#ecc662;margin:2px 0;font-variant-numeric:tabular-nums;}
-  #sPoints .sp-credits{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:18px;}
-  #sPoints .sp-explain{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.8);max-width:340px;margin:0 auto 26px;}
-  #sPoints .sp-explain b{color:#fff;}
-  #sPoints .spEmp{color:#ecc662;font-weight:700;}
-  #sPoints .sp-head{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:29px;line-height:1.16;color:#fff;margin-bottom:22px;}
-  #sPoints .sp-value{background:rgba(255,255,255,.06);border:1px solid rgba(236,198,98,.25);border-radius:14px;padding:18px;margin:0 0 18px;text-align:center;}
-  #sPoints .sp-vlabel{font-size:12.5px;color:rgba(255,255,255,.65);}
-  #sPoints .sp-street{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:800;color:rgba(255,255,255,.55);text-decoration:line-through;text-decoration-color:rgba(255,90,90,.75);margin-top:3px;}
-  #sPoints .sp-divider{height:1px;background:rgba(255,255,255,.1);margin:13px 0;}
-  #sPoints .sp-free-big{font-family:'Playfair Display',Georgia,serif;font-size:46px;font-weight:800;color:#34d27b;line-height:1;margin-top:3px;}
-  #sPoints .sp-fomo{font-size:14px;line-height:1.6;color:rgba(255,255,255,.78);margin:0 0 18px;}
-  #sPoints .sp-fomo b{color:#ecc662;}
-  #sPoints .sp-btn{display:block;width:100%;padding:16px;border:none;border-radius:14px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;background:linear-gradient(135deg,#ecc662,#c8893a);color:#0d2438;box-shadow:0 12px 28px rgba(236,198,98,.3);}
+  #sPoints{display:none;position:fixed;inset:0;z-index:9000;background:rgba(13,36,56,.6);overflow:auto;}
+  #sPoints.on{display:flex;align-items:center;justify-content:center;padding:24px;}
+  #sPoints .sp-inner{width:100%;max-width:420px;text-align:left;}
+  #sPoints .sp-fomo{font-size:13.5px;line-height:1.6;color:#666;margin:0 0 12px;}
+  #sPoints .sp-fomo b{color:#1a1a1a;}
+  #sPoints .sp-explain{font-size:13px;line-height:1.6;color:#666;margin:0 0 12px;}
+  #sPoints .sp-match-note{font-size:12.5px;line-height:1.6;color:#3b6d11;background:#eaf3de;border-radius:8px;padding:10px 12px;margin:0 0 1.25rem;}
+  #sPoints .sp-btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-family:inherit;font-weight:500;font-size:15px;cursor:pointer;background:#1a3a5c;color:#fff;}
   #sPoints .sp-skip,#spVideo .sp-skip{display:block;width:100%;margin-top:11px;background:none;border:none;color:rgba(255,255,255,.6);font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;padding:8px;}
 
   #spVideo{display:none;position:fixed;inset:0;z-index:9100;background:rgba(5,12,22,.8);align-items:center;justify-content:center;padding:20px;}
@@ -1508,9 +2007,8 @@ window.addEventListener('message', function(e){
 </style>
 <script>
   function showPoints(){
-    var o=document.getElementById('sPoints');o.classList.add('on');window.scrollTo(0,0);
-    var emp=((document.getElementById('f_employer')||{}).textContent||'').trim();
-    if(emp && emp!=='—') document.querySelectorAll('.spEmp').forEach(function(e){e.textContent=emp;});
+    document.getElementById('sPoints').classList.add('on');
+    window.scrollTo(0,0);
   }
   function continuePoints(){ document.getElementById('sPoints').classList.remove('on'); startMatching(); }
 
