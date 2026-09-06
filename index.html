@@ -673,7 +673,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <div class="filter-bar">
         <button class="filter-btn active" id="filter-all" onclick="filterAdvisors('all')">All</button>
         <button class="filter-btn" id="filter-virtual" onclick="filterAdvisors('virtual')">💻 Virtual</button>
-        <button class="filter-btn" id="filter-inperson" onclick="filterAdvisors('inperson')">🤝 In Person</button>
+        <button class="filter-btn" id="filter-inperson" onclick="filterAdvisors('inperson')">📍 Local</button>
       </div>
       <div id="altAdvisorsList"></div>
       <button class="btn-p" id="altBtn" style="opacity:0.4;pointer-events:none;" onclick="confirmAlt()">Select this advisor →</button>
@@ -1338,9 +1338,9 @@ function renderPrimaryAdvisor(){
   const card = document.getElementById('advisorCard');
 
   const matchReasonNote = pick.reason === 'local'
-    ? `<div style="font-size:11px;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">📍 Matched because you prefer in-person, near you</div>`
+    ? `<div style="font-size:11px;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">📍 Matched with someone local to you</div>`
     : pick.reason === 'inperson-fallback'
-    ? `<div style="font-size:11px;color:#854f0b;background:#faeeda;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">We don't have someone in-person near you yet — here's who offers in-person meetings</div>`
+    ? `<div style="font-size:11px;color:#854f0b;background:#faeeda;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">We don't have someone local to you yet — here's your next best match</div>`
     : '';
 
   const photoHtml = a.photo
@@ -1350,7 +1350,7 @@ function renderPrimaryAdvisor(){
   const formatBadges = a.formats.map(f=>
     f==='virtual'
       ? '<span class="format-badge format-virtual">💻 Virtual</span>'
-      : '<span class="format-badge format-inperson">🤝 In person</span>'
+      : '<span class="format-badge format-inperson">📍 Local</span>'
   ).join('');
 
   card.innerHTML = `
@@ -1378,11 +1378,22 @@ function renderPrimaryAdvisor(){
     </div>
 
     <div style="background:#f5f5f3;border-radius:10px;padding:12px 14px;margin:0 0 1rem;">
-      <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">How would you like to meet?</div>
-      <div style="font-size:11px;color:#666;margin-bottom:10px;">Most clients find virtual just as effective — but this is your experience.</div>
+      <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">Do you have a location preference?</div>
+      <!-- 2026-09-06, per Alex: "switch the in person language to.. an
+           advisor who is local.. the first meeting will be virtual anyway
+           and the calendar we have with them is prob just for virtual..
+           if we introduce in person it could be trouble." Reframed from a
+           meeting-FORMAT choice to an advisor-LOCATION preference — the
+           actual booking (Calendly) is virtual either way, so the copy
+           should never imply this flow promises an in-person session.
+           inPersonPreferred/'inperson' stay as internal names (still real,
+           just describing "prefers a local advisor," not "wants an
+           in-person meeting") — only the user-facing text changed, to
+           avoid re-touching working code right after the last bug. -->
+      <div style="font-size:11px;color:#666;margin-bottom:10px;">Your first session is a virtual call either way — this is just about whether you'd like someone local to you.</div>
       <div class="filter-bar" style="margin-bottom:0;">
-        <button class="filter-btn ${!inPersonPreferred?'active':''}" id="fmtVirtualBtn" onclick="selectMeetingFormat(false)">💻 Virtual</button>
-        <button class="filter-btn ${inPersonPreferred?'active':''}" id="fmtInPersonBtn" onclick="selectMeetingFormat(true)">🤝 In person</button>
+        <button class="filter-btn ${!inPersonPreferred?'active':''}" id="fmtVirtualBtn" onclick="selectMeetingFormat(false)">No preference</button>
+        <button class="filter-btn ${inPersonPreferred?'active':''}" id="fmtInPersonBtn" onclick="selectMeetingFormat(true)">📍 Someone local</button>
       </div>
     </div>
 
@@ -1558,7 +1569,7 @@ function renderAltAdvisors(filter){
     const formatBadges = a.formats.map(f=>
       f==='virtual'
         ? '<span class="format-badge format-virtual">💻 Virtual</span>'
-        : '<span class="format-badge format-inperson">🤝 In person</span>'
+        : '<span class="format-badge format-inperson">📍 Local</span>'
     ).join('');
 
     return `
