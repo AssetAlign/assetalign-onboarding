@@ -105,6 +105,16 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .btn-o-solid { background: #1a3a5c; color: #fff; border: none; }
 .btn-o-solid:hover { background: #14304d; }
 .btn-ghost { display: block; width: 100%; padding: 8px; background: transparent; color: #999; border: none; font-size: 13px; text-align: center; cursor: pointer; margin-top: 4px; font-family: inherit; }
+/* 2026-09-06, per Alex: "make sure Schedule my time with advisor is
+   bigger than the other two.. we really want them focused on Schedule my
+   30." .btn-o-solid made "See more advisor options"/"Check the Align
+   Network" the same solid navy as the primary Schedule button (from an
+   earlier, separate ask to make those two solid rather than outline) —
+   same fill made them compete on visual weight too. Keeps that solid fill
+   (still real, still asked for) but sizes the primary up and these two
+   down so Schedule is unmistakably the one to press. */
+.btn-p-lg { padding: 16px; font-size: 16px; font-weight: 700; }
+.btn-o-sm { padding: 9px; font-size: 12.5px; }
 .screen { display: none; }
 .screen.active { display: block; }
 .nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
@@ -1409,11 +1419,11 @@ function renderPrimaryAdvisor(){
 
     <hr class="divider">
 
-    <button class="btn-p" onclick="goToSchedule(schedulingAdvisor)">Schedule my 30-minute plan session →</button>
+    <button class="btn-p btn-p-lg" onclick="goToSchedule(schedulingAdvisor)">Schedule my 30-minute plan session →</button>
 
     <div class="other-options-section">
       <div class="other-options-title">Not the right fit?</div>
-      <button class="btn-o btn-o-solid" onclick="go(13)" style="margin-top:0;">See more advisor options →</button>
+      <button class="btn-o btn-o-solid btn-o-sm" onclick="go(13)" style="margin-top:0;">See more advisor options →</button>
     </div>
 
     <!-- 2026-09-05, per Alex: "maybe we should add something like 'see if
@@ -1437,7 +1447,7 @@ function renderPrimaryAdvisor(){
       <div id="networkCheckPrompt">
         <input type="text" id="networkCheckInput" placeholder="Your advisor's name" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;margin-bottom:8px;" onkeydown="if(event.key==='Enter')checkAlignNetwork()">
         <input type="text" id="networkCheckState" placeholder="State they're licensed in (e.g. IL)" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;margin-bottom:8px;" onkeydown="if(event.key==='Enter')checkAlignNetwork()">
-        <button class="btn-o btn-o-solid" style="margin-top:0;" onclick="checkAlignNetwork()">Check if they're already in the Align Network →</button>
+        <button class="btn-o btn-o-solid btn-o-sm" style="margin-top:0;" onclick="checkAlignNetwork()">Check if they're already in the Align Network →</button>
       </div>
       <div id="networkCheckResult" style="display:none;"></div>
     </div>
