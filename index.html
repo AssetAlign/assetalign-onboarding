@@ -1044,7 +1044,18 @@ const sectionMap = {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function go(n, fromPopState){
-  document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n-1));
+  // 2026-09-06 — real bug, found live by Alex right after cutting S5/S7:
+  // this used to activate the screen by its POSITION among .screen elements
+  // in the DOM (i===n-1), which only works if screen count/order exactly
+  // matches 1..14 with no gaps. Deleting S5 and S7 outright (rather than
+  // just skipping them in navigation) shifted every later screen's DOM
+  // position, so go(6) was activating whatever now SAT in the 6th position
+  // (not #s6), and everything after was equally misaligned. Fixed to look
+  // up the actual #s<n> element by id — immune to screens being added,
+  // removed, or reordered in the future.
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const target = document.getElementById('s'+n);
+  if(target) target.classList.add('active');
   document.querySelectorAll('.ps').forEach((p,i)=>{
     p.classList.remove('done','active');
     if(i<n-1) p.classList.add('done');
