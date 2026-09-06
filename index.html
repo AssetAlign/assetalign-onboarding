@@ -748,7 +748,7 @@ const advisorArchive = [
     photo: null,
     avatarBg: '#e6f1fb',
     avatarColor: '#1a3a5c',
-    location: 'Chicago, IL',
+    location: 'Chicago, IL', state: 'IL',
     calendly: null, // ← PLACE ADVISOR CALENDLY LINK HERE e.g. 'https://calendly.com/michael-torres/30min'
     bio: 'Michael specializes in professionals in their 30s navigating their first home purchase alongside debt management and early wealth building. He\'s guided over 340 clients through exactly the kind of moment you\'re in.',
     quote: '"I work with people who are serious about building a real financial foundation. For most of my clients, a home is the single biggest financial decision they\'ll make. I help them get there with a plan that actually holds."',
@@ -767,7 +767,7 @@ const advisorArchive = [
     photo: null,
     avatarBg: '#eaf3de',
     avatarColor: '#27500a',
-    location: 'Boston, MA',
+    location: 'Boston, MA', state: 'MA',
     calendly: null, // ← PLACE ADVISOR CALENDLY LINK HERE
     bio: 'Jennifer has spent 12 years helping first-time home buyers and young families build lasting wealth alongside their mortgage planning.',
     quote: '"Every family deserves a clear, honest path to homeownership. I\'ve helped hundreds of people buy their first home without sacrificing their financial future to get there."',
@@ -786,7 +786,7 @@ const advisorArchive = [
     photo: null,
     avatarBg: '#faeeda',
     avatarColor: '#854f0b',
-    location: 'Remote — serves nationwide',
+    location: 'Remote — serves nationwide', state: null,
     calendly: null, // ← PLACE ADVISOR CALENDLY LINK HERE
     bio: 'David focuses on helping clients in their 30s untangle competing financial priorities — debt payoff, growing savings, and preparing for a first real estate purchase.',
     quote: '"The path to your first home usually starts with clarity on what you owe. I help clients build the bridge between where they are and where they want to be."',
@@ -805,7 +805,7 @@ const advisorArchive = [
     photo: null,
     avatarBg: '#eeedfe',
     avatarColor: '#4c2f9e',
-    location: 'New York, NY',
+    location: 'New York, NY', state: 'NY',
     calendly: null, // ← PLACE ADVISOR CALENDLY LINK HERE
     bio: 'Sandra brings a rare dual perspective as both a CPA and CFP — she helps clients see tax efficiency and wealth building as one integrated strategy.',
     quote: '"Most people don\'t realize how much money they leave on the table at tax time. I make sure that doesn\'t happen to my clients."',
@@ -1283,10 +1283,37 @@ function completeBooking(){
 // ═══════════════════════════════════════════════════
 // ADVISOR RENDERING — S11
 // ═══════════════════════════════════════════════════
+// 2026-09-05, per Alex: "we should have something in the advisor space that
+// says, i want to meet with someone local and we connect them to someone
+// local and that supersedes anything else on the matching front." Previously
+// inPersonPreferred only filtered the S13 "see more options" list — the
+// primary match never actually changed. Now it does: a same-state,
+// in-person-capable advisor replaces the algorithmic top pick outright. If
+// no one's local yet (real gap — only IL/MA/NY are covered today), this is
+// honest about it rather than faking a local match: falls back to the best
+// in-person-capable advisor overall, not a silent re-pick.
+function pickPrimaryAdvisor(){
+  if(inPersonPreferred){
+    const homeState = urlParams.get('home_state') || finchProfile.home_state;
+    const localMatch = advisorArchive.find(a => a.state === homeState && a.formats.includes('inperson'));
+    if(localMatch) return { advisor: localMatch, reason: 'local' };
+    const anyInPerson = advisorArchive.find(a => a.formats.includes('inperson'));
+    if(anyInPerson) return { advisor: anyInPerson, reason: 'inperson-fallback' };
+  }
+  return { advisor: advisorArchive[0], reason: null };
+}
+
 function renderPrimaryAdvisor(){
-  const a = advisorArchive[0];
+  const pick = pickPrimaryAdvisor();
+  const a = pick.advisor;
   schedulingAdvisor = a;
   const card = document.getElementById('advisorCard');
+
+  const matchReasonNote = pick.reason === 'local'
+    ? `<div style="font-size:11px;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">📍 Matched because you prefer in-person, near you</div>`
+    : pick.reason === 'inperson-fallback'
+    ? `<div style="font-size:11px;color:#854f0b;background:#faeeda;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">We don't have someone in-person near you yet — here's who offers in-person meetings</div>`
+    : '';
 
   const photoHtml = a.photo
     ? `<img class="advisor-photo" src="${a.photo}" alt="${a.name}">`
@@ -1300,6 +1327,7 @@ function renderPrimaryAdvisor(){
 
   card.innerHTML = `
     <div style="font-size:11px;font-weight:500;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:1rem;">Match found</div>
+    ${matchReasonNote}
 
     <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:1rem;">
       <div class="advisor-photo-wrap">${photoHtml}</div>
@@ -1345,13 +1373,71 @@ function renderPrimaryAdvisor(){
 
     <hr class="divider">
 
-    <button class="btn-p" onclick="goToSchedule(advisorArchive[0])">Schedule my 30-minute plan session →</button>
+    <button class="btn-p" onclick="goToSchedule(schedulingAdvisor)">Schedule my 30-minute plan session →</button>
 
     <div class="other-options-section">
       <div class="other-options-title">Not the right fit?</div>
       <button class="btn-o" onclick="go(13)" style="margin-top:0;">See more advisor options →</button>
     </div>
+
+    <!-- 2026-09-05, per Alex: "maybe we should add something like 'see if
+         my advisor is in the Align Network' almost like how HMO's work..
+         if they aren't which they most likely won't be we show them what
+         they could be missing out on." Real check against the actual
+         advisorArchive (so a genuine Align-matched advisor's name is
+         honestly recognized) — the realistic "not found" case is the
+         actual hook, framed as what they'd get instead. -->
+    <div class="other-options-section" style="margin-top:14px;">
+      <div class="other-options-title">Already work with someone?</div>
+      <div id="networkCheckPrompt" style="display:flex;gap:8px;">
+        <input type="text" id="networkCheckInput" placeholder="Your advisor's name" style="flex:1;min-width:0;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;">
+        <button class="btn-o" style="margin-top:0;white-space:nowrap;" onclick="checkAlignNetwork()">Check the Align Network →</button>
+      </div>
+      <div id="networkCheckResult" style="display:none;"></div>
+    </div>
   `;
+}
+
+// Word-set match, not a literal substring — "Michael Torres" needs to find
+// "Michael R. Torres" despite the middle initial in between, which a plain
+// .includes() check would miss (a real bug caught while testing this).
+function namesLikelyMatch(typed, advisorName){
+  const norm = s => s.toLowerCase().replace(/[.,]/g,'').split(/\s+/).filter(Boolean);
+  const typedWords = norm(typed);
+  const advisorWords = norm(advisorName);
+  return typedWords.length > 0 && typedWords.every(w => advisorWords.includes(w));
+}
+function checkAlignNetwork(){
+  const input = document.getElementById('networkCheckInput');
+  const name = input.value.trim();
+  if(!name) return;
+  document.getElementById('networkCheckPrompt').style.display = 'none';
+  const result = document.getElementById('networkCheckResult');
+  result.style.display = 'block';
+  result.innerHTML = '<div style="font-size:12px;color:#666;padding:10px 0;">Checking the Align Network…</div>';
+  setTimeout(() => {
+    const found = advisorArchive.find(a => namesLikelyMatch(name, a.name));
+    if(found){
+      result.innerHTML = `<div style="background:#eaf3de;border-radius:8px;padding:12px 14px;font-size:13px;color:#27500a;">Good news — <b>${found.name}</b> is in the Align Network.</div>`;
+      return;
+    }
+    result.innerHTML = `
+      <div style="background:#faeeda;border-radius:8px;padding:12px 14px;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:500;color:#854f0b;margin-bottom:4px;">${name} isn't in the Align Network.</div>
+        <div style="font-size:12px;color:#666;line-height:1.55;">Here's what you'd get with an Align-matched advisor instead:</div>
+      </div>
+      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Only 5% make it in</div><div class="vetting-desc">95% of applicants don't make the Align Network.</div></div></div>
+      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Professional designation required</div><div class="vetting-desc">CFP®, CFA, CPA, or equivalent — proven expertise, not just a license.</div></div></div>
+      <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Clean regulatory record</div><div class="vetting-desc">Zero complaints, zero disciplinary actions — our baseline, not a bonus.</div></div></div>
+      <div class="vetting-row" style="border-bottom:none;"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Reviewed every year</div><div class="vetting-desc">Not a one-time bar — advisors are reviewed annually to stay in it.</div></div></div>
+      <button class="btn-o" style="margin-top:10px;" onclick="resetNetworkCheck()">Got it — continue with my match</button>
+    `;
+  }, 900);
+}
+function resetNetworkCheck(){
+  document.getElementById('networkCheckResult').style.display = 'none';
+  document.getElementById('networkCheckPrompt').style.display = 'flex';
+  document.getElementById('networkCheckInput').value = '';
 }
 
 function goToSchedule(advisor){
@@ -1366,12 +1452,13 @@ function goToSchedule(advisor){
 // filter already reads, just asked as a real question instead of an
 // after-the-fact escape hatch).
 let inPersonPreferred = false;
+// 2026-09-05 — now re-renders the whole card instead of just toggling the
+// button states, since the primary match itself can change (see
+// pickPrimaryAdvisor() above) — "supersedes anything else on the matching
+// front," not just a filter applied later.
 function selectMeetingFormat(wantsInPerson){
   inPersonPreferred = wantsInPerson;
-  const vBtn = document.getElementById('fmtVirtualBtn');
-  const pBtn = document.getElementById('fmtInPersonBtn');
-  if(vBtn) vBtn.classList.toggle('active', !wantsInPerson);
-  if(pBtn) pBtn.classList.toggle('active', wantsInPerson);
+  renderPrimaryAdvisor();
 }
 
 // ═══════════════════════════════════════════════════
