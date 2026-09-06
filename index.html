@@ -469,6 +469,14 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   <div class="screen" id="s6">
     <div class="nav-row"><button class="back" onclick="go(4)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
     <div class="card">
+      <!-- 2026-09-06, per Alex: after cutting the Financial Stress screen
+           (old S5), this lost the "why are we even showing you this"
+           framing. One concise line carries the same idea — financial
+           stress is real and common, a plan is the actual fix — reusing a
+           real stat from that removed screen rather than inventing a new
+           one; the rest of that screen's content (the full 4-stat grid)
+           stays cut. -->
+      <div style="font-size:12px;color:#666;font-style:italic;margin-bottom:0.6rem;line-height:1.55;">73% of employees say money is their #1 source of stress. A plan is what actually changes that.</div>
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">Meet your neighbor.</div>
       <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Same street. Same income. Same mortgage. Same expenses. Exact same financial situation — with one difference: a plan from a financial professional.</div>
       <div class="neighbor-intro">
@@ -498,7 +506,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <div style="font-size:15px;font-weight:500;color:#1a3a5c;text-align:center;margin:0.75rem 0 0.5rem;">The difference isn’t luck. It’s having a real plan — built by someone who knows what they’re doing.</div>
       <button class="btn-p" onclick="goTransition()">Get my plan →</button>
       <div class="hypothetical">* Hypothetical illustration only. Assumes $100,000 starting balance, 7% annual return without professional guidance and 10% with. Actual results will vary.</div>
-      <div class="citation">Source: Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024.</div>
+      <div class="citation">Sources: Bank of America Employee Financial Wellness Study, 2025. Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024.</div>
     </div>
   </div>
 
