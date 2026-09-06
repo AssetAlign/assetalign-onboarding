@@ -471,12 +471,18 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
     <div class="card">
       <!-- 2026-09-06, per Alex: after cutting the Financial Stress screen
            (old S5), this lost the "why are we even showing you this"
-           framing. One concise line carries the same idea — financial
-           stress is real and common, a plan is the actual fix — reusing a
-           real stat from that removed screen rather than inventing a new
-           one; the rest of that screen's content (the full 4-stat grid)
-           stays cut. -->
-      <div style="font-size:12px;color:#666;font-style:italic;margin-bottom:0.6rem;line-height:1.55;">73% of employees say money is their #1 source of stress. A plan is what actually changes that.</div>
+           framing. Reuses one real stat from that removed screen rather
+           than inventing a new one; the rest of that screen's content
+           (the full 4-stat grid) stays cut. First pass styled this as a
+           small italic caption — Alex: "it needs to be framed either
+           bigger or more effectively" — restyled using the same
+           .stat-card/.stat-num treatment the old stat grid used, so the
+           number actually carries weight instead of reading as a footnote. -->
+      <div class="stat-card" style="margin-bottom:0.7rem;">
+        <div class="stat-num" style="font-size:34px;">73%</div>
+        <div style="font-size:12px;color:#666;">of employees say money is their #1 source of stress</div>
+      </div>
+      <div style="font-size:14px;font-weight:500;color:#1a3a5c;text-align:center;margin-bottom:1.1rem;">A plan is what actually changes that.</div>
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">Meet your neighbor.</div>
       <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Same street. Same income. Same mortgage. Same expenses. Exact same financial situation — with one difference: a plan from a financial professional.</div>
       <div class="neighbor-intro">
