@@ -348,6 +348,33 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   font-size: 11px; font-weight: 500;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
+
+/* ── DISCLOSURE GATE — 2026-09-06, per Alex + Keiron's feedback thread:
+     shown once, right before "Schedule my 30-minute session" (the actual
+     "become a client" moment), not at S1 (too early — friction before
+     anyone's invested anything) and not on the dashboard (too late — by
+     then they've already booked). Same scroll-to-bottom + checkbox gate
+     as the dashboard's own version; content kept short/soft per Alex's
+     "look at how Zoe/Ramsey word theirs" ask — employer-level compensation
+     lives only in the fuller disclosures a person can find later, not
+     here. */
+.disclosure-overlay { display: none; position: fixed; inset: 0; background: rgba(8,20,48,0.85); z-index: 4000; align-items: center; justify-content: center; padding: 20px; }
+.disclosure-overlay.show { display: flex; }
+.disclosure-box { background: #fff; border-radius: 12px; max-width: 480px; width: 100%; height: min(600px, 88vh); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.disclosure-header { padding: 22px 26px 16px; border-bottom: 0.5px solid rgba(0,0,0,0.08); flex-shrink: 0; }
+.disclosure-header h2 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+.disclosure-header p { font-size: 12.5px; color: #666; }
+.disclosure-body { padding: 18px 26px; overflow-y: auto; flex: 1; font-size: 12.5px; color: #333; line-height: 1.65; }
+.disclosure-body h4 { font-size: 11px; font-weight: 700; color: #1a3a5c; text-transform: uppercase; letter-spacing: 0.08em; margin: 14px 0 5px; }
+.disclosure-body h4:first-child { margin-top: 0; }
+.disclosure-body p { margin-bottom: 10px; }
+.disclosure-footer { padding: 16px 26px 22px; border-top: 0.5px solid rgba(0,0,0,0.08); flex-shrink: 0; }
+.disclosure-check-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; cursor: pointer; font-size: 12px; color: #444; line-height: 1.5; }
+.disclosure-check-row input { margin-top: 2px; flex-shrink: 0; }
+.disclosure-scroll-hint { font-size: 11px; font-weight: 600; color: #c8a84b; text-align: center; margin-bottom: 10px; }
+.btn-disclose-agree { display: block; width: 100%; padding: 11px; background: #1a3a5c; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; font-family: inherit; }
+.btn-disclose-agree:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-disclose-decline { display: block; width: 100%; padding: 8px; background: transparent; color: #999; border: none; font-size: 12px; text-align: center; cursor: pointer; margin-top: 6px; font-family: inherit; }
 </style>
 </head>
 <body>
@@ -772,6 +799,49 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   <div class="tut-body" id="tutBody"></div>
   <button class="tut-cta" id="tutCta" onclick="tutNext()"></button>
   <button class="tut-skip" id="tutSkip" onclick="endTutorial()" style="display:none;"></button>
+</div>
+
+<!-- ── DISCLOSURE GATE — see the CSS comment above for why this sits here,
+     right before scheduling, rather than at S1 or on the dashboard. ── -->
+<div class="disclosure-overlay" id="disclosureModal">
+  <div class="disclosure-box">
+    <div class="disclosure-header">
+      <h2>Before You Schedule</h2>
+      <p>Please read the following disclosures. This takes about a minute.</p>
+    </div>
+    <div class="disclosure-body" id="disclosureBody">
+      <h4>Item 1. Who We Are</h4>
+      <p>AssetAlign is a <strong>financial wellness enablement platform</strong>, operated by ABTW Corporation, which is registered as an investment adviser with the Massachusetts Securities Division. We connect you with the right financial solutions, efficiently — whether that's a vetted independent advisor or a trusted partner for insurance, estate planning, tax prep, or debt management. Advisors available through our platform are independent professionals, registered as investment advisers or broker-dealers in their own right; AssetAlign itself does not manage your investments or provide investment, legal, or tax advice directly.</p>
+
+      <h4>Item 2. How AssetAlign Makes Money</h4>
+      <p>AssetAlign may receive compensation — including referral fees and ongoing revenue share — from the financial advisors and Exchange partners (insurance, mortgage, estate planning, tax, and debt services) you connect with. This doesn't add to your cost. It may give us an incentive to favor advisors or partners who pay us more, so the decision to work with any of them is always yours to make independently. Mortgage-related compensation follows the additional rules set by the federal Real Estate Settlement Procedures Act (RESPA).</p>
+
+      <h4>Item 3. Align Credits</h4>
+      <p>Align Credits are a loyalty reward issued solely by AssetAlign. They carry no monetary value outside the AssetAlign platform, cannot be exchanged for cash, and may only be redeemed for services in the AssetAlign Exchange. Credits are available to use as soon as you earn them, with no waiting period, and are non-transferable.</p>
+      <p>Because you can earn and spend credits across different services, they may encourage you to try something you wouldn't otherwise — make each choice on its own merits, not your credit balance.</p>
+
+      <h4>Item 4. Your Information</h4>
+      <p>By using this platform, you consent to AssetAlign collecting and using your financial profile information — including goals, income range, and insurance information you provide — to facilitate advisor matching and partner recommendations. We may share relevant profile information with matched advisors and Exchange partners solely to facilitate service delivery. We do not sell your personal information to third parties.</p>
+
+      <h4>Item 5. No Guarantee</h4>
+      <p>AssetAlign does not guarantee the suitability, performance, qualifications, or conduct of any matched advisor or Exchange partner. Advisor and partner matching is based on profile compatibility and is for informational purposes only. All financial decisions remain solely your responsibility.</p>
+
+      <h4>Item 6. Our Registration</h4>
+      <p>ABTW Corporation (d/b/a AssetAlign) is registered as an investment adviser with the Massachusetts Securities Division and is not registered with the U.S. Securities and Exchange Commission (SEC). You can independently verify our registration and review our Form ADV at <strong>adviserinfo.sec.gov</strong>, a free public tool covering both state- and SEC-registered advisers.</p>
+
+      <h4>Item 7. Questions</h4>
+      <p>If you have questions about these disclosures or our compensation arrangements, please contact us at <strong>compliance@assetalign.net</strong> before proceeding.</p>
+    </div>
+    <div class="disclosure-footer">
+      <label class="disclosure-check-row">
+        <input type="checkbox" id="disclosureCheck" onchange="toggleAgreeBtn()"/>
+        <span>I have read and understand AssetAlign's disclosures, including that AssetAlign receives compensation from advisors and Exchange partners, and that Align Credits create an incentive to use additional services.</span>
+      </label>
+      <div class="disclosure-scroll-hint" id="disclosureScrollHint">↓ Scroll up to read the full disclosure before you can agree</div>
+      <button class="btn-disclose-agree" id="btnAgree" disabled onclick="agreeDisclosure()">I Agree &amp; Continue to Scheduling →</button>
+      <button class="btn-disclose-decline" onclick="declineDisclosure()">Not right now</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1542,9 +1612,63 @@ function resetNetworkCheck(){
   lastNetworkGapCredits = null;
 }
 
+// 2026-09-06, per Alex + Keiron's feedback thread: the disclosure gate
+// used to only exist on the dashboard, which meant it fired AFTER someone
+// had already scheduled a real session with an advisor — backwards from
+// "disclose before you engage as a client." Gated here instead, right at
+// the actual engagement moment, so browsing/matching stays friction-free.
+let pendingScheduleAdvisor = null;
 function goToSchedule(advisor){
+  if(!localStorage.getItem('aa_disclosed')){
+    pendingScheduleAdvisor = advisor;
+    showDisclosureGate();
+    return;
+  }
   schedulingAdvisor = advisor;
   go(12);
+}
+
+let disclosureScrolledToBottom = false;
+function toggleAgreeBtn(){
+  const check = document.getElementById('disclosureCheck');
+  const btn = document.getElementById('btnAgree');
+  if(check && btn) btn.disabled = !(check.checked && disclosureScrolledToBottom);
+}
+function checkDisclosureScroll(){
+  const body = document.getElementById('disclosureBody');
+  const hint = document.getElementById('disclosureScrollHint');
+  if(!body) return;
+  const atBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 12;
+  if(atBottom && !disclosureScrolledToBottom){
+    disclosureScrolledToBottom = true;
+    if(hint) hint.style.display = 'none';
+    toggleAgreeBtn();
+  }
+}
+function showDisclosureGate(){
+  const modal = document.getElementById('disclosureModal');
+  const body = document.getElementById('disclosureBody');
+  const hint = document.getElementById('disclosureScrollHint');
+  disclosureScrolledToBottom = !!(body && body.scrollHeight <= body.clientHeight + 12);
+  if(hint) hint.style.display = disclosureScrolledToBottom ? 'none' : 'block';
+  if(body){ body.scrollTop = 0; body.onscroll = checkDisclosureScroll; }
+  toggleAgreeBtn();
+  if(modal) modal.classList.add('show');
+}
+function agreeDisclosure(){
+  localStorage.setItem('aa_disclosed', '1');
+  const modal = document.getElementById('disclosureModal');
+  if(modal) modal.classList.remove('show');
+  if(pendingScheduleAdvisor){
+    schedulingAdvisor = pendingScheduleAdvisor;
+    pendingScheduleAdvisor = null;
+    go(12);
+  }
+}
+function declineDisclosure(){
+  const modal = document.getElementById('disclosureModal');
+  if(modal) modal.classList.remove('show');
+  pendingScheduleAdvisor = null;
 }
 
 // 2026-09-05, per Alex: a quick, upfront meeting-format preference with a
