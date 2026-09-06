@@ -566,6 +566,20 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">A few quick questions</div>
       <div style="font-size:12px;color:#666;margin-bottom:1.25rem;line-height:1.6;">These help us match you with the right advisor. Skip any you prefer — you can always answer later.</div>
       <div id="qContainer"></div>
+
+      <!-- 2026-09-06, per Alex: moved out of the advisor-match screen (S11)
+           and into the questions section — it's an input that shapes the
+           match, so it belongs with the other matching questions, not
+           tucked into the result screen. -->
+      <div style="background:#f5f5f3;border-radius:10px;padding:12px 14px;margin:0 0 1.25rem;">
+        <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">Do you have a location preference?</div>
+        <div style="font-size:11px;color:#666;margin-bottom:10px;">Most people are happy meeting virtually, and your first session is a virtual call either way — this is just about whether you'd also like someone local to you.</div>
+        <div class="filter-bar" style="margin-bottom:0;">
+          <button class="filter-btn active" id="fmtVirtualBtn" onclick="selectMeetingFormat(false)">No preference</button>
+          <button class="filter-btn" id="fmtInPersonBtn" onclick="selectMeetingFormat(true)">📍 Someone local</button>
+        </div>
+      </div>
+
       <button class="btn-p" onclick="showPoints()">Find my advisor match →</button>
       <button class="btn-ghost" onclick="showPoints()">Skip all</button>
     </div>
@@ -1383,26 +1397,6 @@ function renderPrimaryAdvisor(){
       <div style="font-size:13px;color:#1a3a5c;line-height:1.55;"><b>${a.name.split(' ')[0]} works with people in your exact situation</b> — right where you are now, with the same goals you just shared. This is exactly who they help, every single day.</div>
     </div>
 
-    <div style="background:#f5f5f3;border-radius:10px;padding:12px 14px;margin:0 0 1rem;">
-      <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">Do you have a location preference?</div>
-      <!-- 2026-09-06, per Alex: "switch the in person language to.. an
-           advisor who is local.. the first meeting will be virtual anyway
-           and the calendar we have with them is prob just for virtual..
-           if we introduce in person it could be trouble." Reframed from a
-           meeting-FORMAT choice to an advisor-LOCATION preference — the
-           actual booking (Calendly) is virtual either way, so the copy
-           should never imply this flow promises an in-person session.
-           inPersonPreferred/'inperson' stay as internal names (still real,
-           just describing "prefers a local advisor," not "wants an
-           in-person meeting") — only the user-facing text changed, to
-           avoid re-touching working code right after the last bug. -->
-      <div style="font-size:11px;color:#666;margin-bottom:10px;">Your first session is a virtual call either way — this is just about whether you'd like someone local to you.</div>
-      <div class="filter-bar" style="margin-bottom:0;">
-        <button class="filter-btn ${!inPersonPreferred?'active':''}" id="fmtVirtualBtn" onclick="selectMeetingFormat(false)">No preference</button>
-        <button class="filter-btn ${inPersonPreferred?'active':''}" id="fmtInPersonBtn" onclick="selectMeetingFormat(true)">📍 Someone local</button>
-      </div>
-    </div>
-
     <div class="stat-row">
       <div class="advisor-stat"><div style="font-size:18px;font-weight:500;color:#1a3a5c;line-height:1;">${a.clients}</div><div style="font-size:10px;color:#666;margin-top:3px;">Clients guided</div></div>
       <div class="advisor-stat"><div style="font-size:18px;font-weight:500;color:#1a3a5c;line-height:1;">${a.years}</div><div style="font-size:10px;color:#666;margin-top:3px;">In practice</div></div>
@@ -1538,13 +1532,18 @@ function goToSchedule(advisor){
 // filter already reads, just asked as a real question instead of an
 // after-the-fact escape hatch).
 let inPersonPreferred = false;
-// 2026-09-05 — now re-renders the whole card instead of just toggling the
-// button states, since the primary match itself can change (see
-// pickPrimaryAdvisor() above) — "supersedes anything else on the matching
-// front," not just a filter applied later.
+// 2026-09-06 — asked in S9 now, before the match is even computed, so there's
+// no live advisor card to re-render here. go(11) (line ~1090) already calls
+// renderPrimaryAdvisor() fresh every time that screen is shown, which is
+// where inPersonPreferred actually takes effect (see pickPrimaryAdvisor()
+// above — it still supersedes the algorithmic pick). This just updates the
+// two buttons' own selected state.
 function selectMeetingFormat(wantsInPerson){
   inPersonPreferred = wantsInPerson;
-  renderPrimaryAdvisor();
+  const vBtn = document.getElementById('fmtVirtualBtn');
+  const iBtn = document.getElementById('fmtInPersonBtn');
+  if(vBtn) vBtn.classList.toggle('active', !wantsInPerson);
+  if(iBtn) iBtn.classList.toggle('active', wantsInPerson);
 }
 
 // ═══════════════════════════════════════════════════
