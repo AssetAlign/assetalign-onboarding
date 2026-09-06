@@ -102,6 +102,8 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .btn-p:hover { background: #14304f; }
 .btn-o { display: block; width: 100%; padding: 11px; background: transparent; color: #1a3a5c; border: 0.5px solid #1a3a5c; border-radius: 8px; font-size: 14px; font-weight: 500; text-align: center; cursor: pointer; margin-top: 8px; font-family: inherit; }
 .btn-o:hover { background: #f0f6fc; }
+.btn-o-solid { background: #1a3a5c; color: #fff; border: none; }
+.btn-o-solid:hover { background: #14304d; }
 .btn-ghost { display: block; width: 100%; padding: 8px; background: transparent; color: #999; border: none; font-size: 13px; text-align: center; cursor: pointer; margin-top: 4px; font-family: inherit; }
 .screen { display: none; }
 .screen.active { display: block; }
@@ -1403,7 +1405,7 @@ function renderPrimaryAdvisor(){
 
     <div class="other-options-section">
       <div class="other-options-title">Not the right fit?</div>
-      <button class="btn-o" onclick="go(13)" style="margin-top:0;">See more advisor options →</button>
+      <button class="btn-o btn-o-solid" onclick="go(13)" style="margin-top:0;">See more advisor options →</button>
     </div>
 
     <!-- 2026-09-05, per Alex: "maybe we should add something like 'see if
@@ -1412,12 +1414,21 @@ function renderPrimaryAdvisor(){
          they could be missing out on." Real check against the actual
          advisorArchive (so a genuine Align-matched advisor's name is
          honestly recognized) — the realistic "not found" case is the
-         actual hook, framed as what they'd get instead. -->
+         actual hook, framed as what they'd get instead.
+         2026-09-06 — real bug, per Alex ("is the check the align network
+         button broken?? why is there a box next to it?"): .btn-o's base
+         style is display:block;width:100%, which fights a flex row when
+         the button sits next to an input — every OTHER .btn-o in this file
+         is stacked full-width, so putting one in a side-by-side row was a
+         one-off deviation from the rest of the file, not just a styling
+         miss. Fixed by stacking the input above the button instead, same
+         as everywhere else; also solidified per Alex's "boxes be solid
+         colors" and made the button state its own action explicitly. -->
     <div class="other-options-section" style="margin-top:14px;">
       <div class="other-options-title">Already work with someone?</div>
-      <div id="networkCheckPrompt" style="display:flex;gap:8px;">
-        <input type="text" id="networkCheckInput" placeholder="Your advisor's name" style="flex:1;min-width:0;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;">
-        <button class="btn-o" style="margin-top:0;white-space:nowrap;" onclick="checkAlignNetwork()">Check the Align Network →</button>
+      <div id="networkCheckPrompt">
+        <input type="text" id="networkCheckInput" placeholder="Your advisor's name" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;margin-bottom:8px;" onkeydown="if(event.key==='Enter')checkAlignNetwork()">
+        <button class="btn-o btn-o-solid" style="margin-top:0;" onclick="checkAlignNetwork()">Check if they're already in the Align Network →</button>
       </div>
       <div id="networkCheckResult" style="display:none;"></div>
     </div>
@@ -1459,10 +1470,8 @@ function checkAlignNetwork(){
 
       <div style="margin-top:12px;padding-top:12px;border-top:0.5px solid rgba(0,0,0,0.08);">
         <div style="font-size:12px;color:#666;margin-bottom:8px;">See what you're missing — how much do you have in assets with them?</div>
-        <div style="display:flex;gap:8px;">
-          <input type="text" inputmode="numeric" id="networkGapAssets" placeholder="e.g. 250,000" style="flex:1;min-width:0;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;" onkeydown="if(event.key==='Enter')calcNetworkGap()">
-          <button class="btn-o" style="margin-top:0;white-space:nowrap;" onclick="calcNetworkGap()">Calculate →</button>
-        </div>
+        <input type="text" inputmode="numeric" id="networkGapAssets" placeholder="e.g. 250,000" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;margin-bottom:8px;" onkeydown="if(event.key==='Enter')calcNetworkGap()">
+        <button class="btn-o" style="margin-top:0;" onclick="calcNetworkGap()">Calculate →</button>
         <div id="networkGapResult" style="display:none;"></div>
       </div>
 
