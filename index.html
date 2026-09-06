@@ -1133,13 +1133,10 @@ function buildAndGoQuestions(){ buildQuestions(); go(9); }
 function showScheduleScreen(advisor){
   schedulingAdvisor = advisor;
 
-  // Mini advisor card
-  const photoHtml = advisor.photo
-    ? `<img src="${advisor.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;outline:2px solid #c8a84b;" alt="${advisor.name}">`
-    : `<div class="sched-advisor-mini-initials" style="background:${advisor.avatarBg};color:${advisor.avatarColor};">${advisor.initials}</div>`;
-
+  // 2026-09-06, per Alex: "no need to have the picture on the top and in
+  // the scheduling box.. just one is fine" — the intro card (S11) already
+  // shows the advisor's photo, so this recap card is text-only.
   document.getElementById('schedAdvisorMini').innerHTML = `
-    ${photoHtml}
     <div>
       <div class="sched-advisor-mini-name">${advisor.name}, ${advisor.credentials}</div>
       <div class="sched-advisor-mini-sub">📍 ${advisor.location} &nbsp;·&nbsp; ${advisor.matchScore}% match</div>
@@ -1439,6 +1436,7 @@ function renderPrimaryAdvisor(){
       <div class="other-options-title">Already work with someone?</div>
       <div id="networkCheckPrompt">
         <input type="text" id="networkCheckInput" placeholder="Your advisor's name" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;margin-bottom:8px;" onkeydown="if(event.key==='Enter')checkAlignNetwork()">
+        <input type="text" id="networkCheckState" placeholder="State they're licensed in (e.g. IL)" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;margin-bottom:8px;" onkeydown="if(event.key==='Enter')checkAlignNetwork()">
         <button class="btn-o btn-o-solid" style="margin-top:0;" onclick="checkAlignNetwork()">Check if they're already in the Align Network →</button>
       </div>
       <div id="networkCheckResult" style="display:none;"></div>
@@ -1446,32 +1444,25 @@ function renderPrimaryAdvisor(){
   `;
 }
 
-// Word-set match, not a literal substring — "Michael Torres" needs to find
-// "Michael R. Torres" despite the middle initial in between, which a plain
-// .includes() check would miss (a real bug caught while testing this).
-function namesLikelyMatch(typed, advisorName){
-  const norm = s => s.toLowerCase().replace(/[.,]/g,'').split(/\s+/).filter(Boolean);
-  const typedWords = norm(typed);
-  const advisorWords = norm(advisorName);
-  return typedWords.length > 0 && typedWords.every(w => advisorWords.includes(w));
-}
+// 2026-09-06, per Alex: this used to try a real namesLikelyMatch() lookup
+// against advisorArchive (4 fictional demo advisors) — meaningless odds of
+// a real typed name ever matching, so for now it always renders the
+// "not in network" outcome below. Swap back to a real lookup once there's
+// an actual advisor directory behind this.
 function checkAlignNetwork(){
   const input = document.getElementById('networkCheckInput');
   const name = input.value.trim();
   if(!name) return;
+  const state = document.getElementById('networkCheckState').value.trim();
   document.getElementById('networkCheckPrompt').style.display = 'none';
   const result = document.getElementById('networkCheckResult');
   result.style.display = 'block';
   result.innerHTML = '<div style="font-size:12px;color:#666;padding:10px 0;">Checking the Align Network…</div>';
   setTimeout(() => {
-    const found = advisorArchive.find(a => namesLikelyMatch(name, a.name));
-    if(found){
-      result.innerHTML = `<div style="background:#eaf3de;border-radius:8px;padding:12px 14px;font-size:13px;color:#27500a;">Good news — <b>${found.name}</b> is in the Align Network.</div>`;
-      return;
-    }
+    const stateNote = state ? ` in ${state}` : '';
     result.innerHTML = `
       <div style="background:#faeeda;border-radius:8px;padding:12px 14px;margin-bottom:6px;">
-        <div style="font-size:13px;font-weight:500;color:#854f0b;margin-bottom:4px;">${name} isn't in the Align Network.</div>
+        <div style="font-size:13px;font-weight:500;color:#854f0b;margin-bottom:4px;">${name}${stateNote} isn't in the Align Network yet.</div>
         <div style="font-size:12px;color:#666;line-height:1.55;">Here's what you'd get with an Align-matched advisor instead:</div>
       </div>
       <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Only 5% make it in</div><div class="vetting-desc">95% of applicants don't make the Align Network.</div></div></div>
@@ -1486,9 +1477,27 @@ function checkAlignNetwork(){
         <div id="networkGapResult" style="display:none;"></div>
       </div>
 
+      <div style="margin-top:12px;padding-top:12px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div style="font-size:12px;color:#666;margin-bottom:8px;">Think they'd be a good fit? Let them know what you're missing.</div>
+        <button class="btn-o btn-o-solid" style="margin-top:0;" onclick="emailAdvisorInvite('${name.replace(/'/g,"\\'")}')">✉️ Email your advisor about joining →</button>
+      </div>
+
       <button class="btn-o" style="margin-top:10px;" onclick="resetNetworkCheck()">Got it — continue with my match</button>
     `;
   }, 900);
+}
+// Filled in by calcNetworkGap() below so the invite email can mention the
+// real number the person just saw, instead of a generic pitch.
+let lastNetworkGapCredits = null;
+function emailAdvisorInvite(name){
+  const creditsLine = lastNetworkGapCredits
+    ? `Based on what I have invested with you, that's about ${lastNetworkGapCredits.toLocaleString()} Align Credits a year I'm missing out on by not doing this through the Align Network.\n\n`
+    : '';
+  const subject = encodeURIComponent('Joining the AssetAlign Align Network');
+  const body = encodeURIComponent(
+    `Hi ${name},\n\nI get access to a financial-wellness benefit through my employer called AssetAlign, and I'd love to keep working with you through it — but you're not yet in their Align Network of vetted advisors.\n\n${creditsLine}Would you be open to applying? It's a straightforward vetting process, and it would let me use my Align Credits with you instead of switching advisors.\n\nYou can apply here: https://assetalign-advisor-profile.netlify.app/\n\nThanks,\n`
+  );
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
 // Same real rate as the dashboard's "Power of Your Credits" projection
 // (assetalign-dashboard-v2, renderCreditProjection's REL_CREDIT_RATE) —
@@ -1510,14 +1519,17 @@ function calcNetworkGap(){
     return;
   }
   const annualCredits = Math.round(assets * NETWORK_GAP_CREDIT_RATE);
+  lastNetworkGapCredits = annualCredits;
   result.innerHTML = `<div style="background:#eaf3de;border-radius:8px;padding:12px 14px;margin-top:8px;">
     <div style="font-size:13px;color:#27500a;line-height:1.5;">With an Align-matched advisor, that's about <b>${annualCredits.toLocaleString()} Align Credits back every year</b> — real value you're not getting today.</div>
   </div>`;
 }
 function resetNetworkCheck(){
   document.getElementById('networkCheckResult').style.display = 'none';
-  document.getElementById('networkCheckPrompt').style.display = 'flex';
+  document.getElementById('networkCheckPrompt').style.display = 'block';
   document.getElementById('networkCheckInput').value = '';
+  document.getElementById('networkCheckState').value = '';
+  lastNetworkGapCredits = null;
 }
 
 function goToSchedule(advisor){
