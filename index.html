@@ -1430,9 +1430,41 @@ function checkAlignNetwork(){
       <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Professional designation required</div><div class="vetting-desc">CFP®, CFA, CPA, or equivalent — proven expertise, not just a license.</div></div></div>
       <div class="vetting-row"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Clean regulatory record</div><div class="vetting-desc">Zero complaints, zero disciplinary actions — our baseline, not a bonus.</div></div></div>
       <div class="vetting-row" style="border-bottom:none;"><div class="vcheck"><div class="vcheck-inner"></div></div><div><div class="vetting-title">Reviewed every year</div><div class="vetting-desc">Not a one-time bar — advisors are reviewed annually to stay in it.</div></div></div>
+
+      <div style="margin-top:12px;padding-top:12px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div style="font-size:12px;color:#666;margin-bottom:8px;">See what you're missing — how much do you have in assets with them?</div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" inputmode="numeric" id="networkGapAssets" placeholder="e.g. 250,000" style="flex:1;min-width:0;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;" onkeydown="if(event.key==='Enter')calcNetworkGap()">
+          <button class="btn-o" style="margin-top:0;white-space:nowrap;" onclick="calcNetworkGap()">Calculate →</button>
+        </div>
+        <div id="networkGapResult" style="display:none;"></div>
+      </div>
+
       <button class="btn-o" style="margin-top:10px;" onclick="resetNetworkCheck()">Got it — continue with my match</button>
     `;
   }, 900);
+}
+// Same real rate already live on the dashboard's "Power of Your Credits"
+// projection (assetalign-dashboard-v2, renderCreditProjection): 1 Align
+// Credit per $250 under advisement, earned annually, valued 1:1. This is
+// the simplified, already-approved PUBLIC rate — not the actual internal
+// revenue-share math, which per the credit-economics reference is never
+// surfaced in-product. Reusing the same $250 figure here so this and the
+// dashboard's own projection never disagree with each other.
+const NETWORK_GAP_CREDIT_RATE = 1 / 250;
+function calcNetworkGap(){
+  const raw = document.getElementById('networkGapAssets').value.replace(/[^0-9.]/g, '');
+  const assets = parseFloat(raw);
+  const result = document.getElementById('networkGapResult');
+  result.style.display = 'block';
+  if(!assets || assets <= 0){
+    result.innerHTML = '<div style="font-size:11px;color:#b23a2c;margin-top:6px;">Enter a real number to see your estimate.</div>';
+    return;
+  }
+  const annualCredits = Math.round(assets * NETWORK_GAP_CREDIT_RATE);
+  result.innerHTML = `<div style="background:#eaf3de;border-radius:8px;padding:12px 14px;margin-top:8px;">
+    <div style="font-size:13px;color:#27500a;line-height:1.5;">With an Align-matched advisor, that's about <b>${annualCredits.toLocaleString()} Align Credits back every year</b> — real value you're not getting today.</div>
+  </div>`;
 }
 function resetNetworkCheck(){
   document.getElementById('networkCheckResult').style.display = 'none';
