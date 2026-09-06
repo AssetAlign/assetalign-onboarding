@@ -803,13 +803,13 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 
 <!-- ── DISCLOSURE GATE — see the CSS comment above for why this sits here,
      right before scheduling, rather than at S1 or on the dashboard. ── -->
-<div class="disclosure-overlay" id="disclosureModal">
+<div class="disclosure-overlay" id="obDisclosureModal">
   <div class="disclosure-box">
     <div class="disclosure-header">
       <h2>Before You Schedule</h2>
       <p>Please read the following disclosures. This takes about a minute.</p>
     </div>
-    <div class="disclosure-body" id="disclosureBody">
+    <div class="disclosure-body" id="obDisclosureBody">
       <h4>Item 1. Who We Are</h4>
       <p>AssetAlign is a <strong>financial wellness enablement platform</strong>, operated by ABTW Corporation, which is registered as an investment adviser with the Massachusetts Securities Division. We connect you with the right financial solutions, efficiently — whether that's a vetted independent advisor or a trusted partner for insurance, estate planning, tax prep, or debt management. Advisors available through our platform are independent professionals, registered as investment advisers or broker-dealers in their own right; AssetAlign itself does not manage your investments or provide investment, legal, or tax advice directly.</p>
 
@@ -834,12 +834,12 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
     </div>
     <div class="disclosure-footer">
       <label class="disclosure-check-row">
-        <input type="checkbox" id="disclosureCheck" onchange="toggleAgreeBtn()"/>
+        <input type="checkbox" id="obDisclosureCheck" onchange="obToggleAgreeBtn()"/>
         <span>I have read and understand AssetAlign's disclosures, including that AssetAlign receives compensation from advisors and Exchange partners, and that Align Credits create an incentive to use additional services.</span>
       </label>
-      <div class="disclosure-scroll-hint" id="disclosureScrollHint">↓ Scroll up to read the full disclosure before you can agree</div>
-      <button class="btn-disclose-agree" id="btnAgree" disabled onclick="agreeDisclosure()">I Agree &amp; Continue to Scheduling →</button>
-      <button class="btn-disclose-decline" onclick="declineDisclosure()">Not right now</button>
+      <div class="disclosure-scroll-hint" id="obDisclosureScrollHint">↓ Scroll up to read the full disclosure before you can agree</div>
+      <button class="btn-disclose-agree" id="obBtnAgree" disabled onclick="obAgreeDisclosure()">I Agree &amp; Continue to Scheduling →</button>
+      <button class="btn-disclose-decline" onclick="obDeclineDisclosure()">Not right now</button>
     </div>
   </div>
 </div>
@@ -1621,43 +1621,43 @@ let pendingScheduleAdvisor = null;
 function goToSchedule(advisor){
   if(!localStorage.getItem('aa_disclosed')){
     pendingScheduleAdvisor = advisor;
-    showDisclosureGate();
+    obShowDisclosureGate();
     return;
   }
   schedulingAdvisor = advisor;
   go(12);
 }
 
-let disclosureScrolledToBottom = false;
-function toggleAgreeBtn(){
-  const check = document.getElementById('disclosureCheck');
-  const btn = document.getElementById('btnAgree');
-  if(check && btn) btn.disabled = !(check.checked && disclosureScrolledToBottom);
+let obDisclosureScrolledToBottom = false;
+function obToggleAgreeBtn(){
+  const check = document.getElementById('obDisclosureCheck');
+  const btn = document.getElementById('obBtnAgree');
+  if(check && btn) btn.disabled = !(check.checked && obDisclosureScrolledToBottom);
 }
-function checkDisclosureScroll(){
-  const body = document.getElementById('disclosureBody');
-  const hint = document.getElementById('disclosureScrollHint');
+function obCheckDisclosureScroll(){
+  const body = document.getElementById('obDisclosureBody');
+  const hint = document.getElementById('obDisclosureScrollHint');
   if(!body) return;
   const atBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 12;
-  if(atBottom && !disclosureScrolledToBottom){
-    disclosureScrolledToBottom = true;
+  if(atBottom && !obDisclosureScrolledToBottom){
+    obDisclosureScrolledToBottom = true;
     if(hint) hint.style.display = 'none';
-    toggleAgreeBtn();
+    obToggleAgreeBtn();
   }
 }
-function showDisclosureGate(){
-  const modal = document.getElementById('disclosureModal');
-  const body = document.getElementById('disclosureBody');
-  const hint = document.getElementById('disclosureScrollHint');
-  disclosureScrolledToBottom = !!(body && body.scrollHeight <= body.clientHeight + 12);
-  if(hint) hint.style.display = disclosureScrolledToBottom ? 'none' : 'block';
-  if(body){ body.scrollTop = 0; body.onscroll = checkDisclosureScroll; }
-  toggleAgreeBtn();
+function obShowDisclosureGate(){
+  const modal = document.getElementById('obDisclosureModal');
+  const body = document.getElementById('obDisclosureBody');
+  const hint = document.getElementById('obDisclosureScrollHint');
+  obDisclosureScrolledToBottom = !!(body && body.scrollHeight <= body.clientHeight + 12);
+  if(hint) hint.style.display = obDisclosureScrolledToBottom ? 'none' : 'block';
+  if(body){ body.scrollTop = 0; body.onscroll = obCheckDisclosureScroll; }
+  obToggleAgreeBtn();
   if(modal) modal.classList.add('show');
 }
-function agreeDisclosure(){
+function obAgreeDisclosure(){
   localStorage.setItem('aa_disclosed', '1');
-  const modal = document.getElementById('disclosureModal');
+  const modal = document.getElementById('obDisclosureModal');
   if(modal) modal.classList.remove('show');
   if(pendingScheduleAdvisor){
     schedulingAdvisor = pendingScheduleAdvisor;
@@ -1665,8 +1665,8 @@ function agreeDisclosure(){
     go(12);
   }
 }
-function declineDisclosure(){
-  const modal = document.getElementById('disclosureModal');
+function obDeclineDisclosure(){
+  const modal = document.getElementById('obDisclosureModal');
   if(modal) modal.classList.remove('show');
   pendingScheduleAdvisor = null;
 }
