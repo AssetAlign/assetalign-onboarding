@@ -464,6 +464,17 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <p style="font-size:12px;color:#1a1a1a;margin-bottom:4px;">People usually make these decisions in isolation. We brought them together for you — and reward you with Align Credits. Unlike airline miles or credit card points, where 100,000 might get you $50, every Align Credit is worth a real $1 toward advice, insurance, tax prep, and more. Your info's already loaded — take the next 2 minutes to change your financial future.</p>
       <p style="font-size:11px;color:#aaa;margin-bottom:0;">Your plan is already covered by your employer — it's completely up to you whether you choose to work with an advisor. Your employer never sees your information.</p>
       <button class="btn-p" onclick="go(2)">Verify My Info &amp; Get Started →</button>
+      <!-- 2026-09-08, per Alex: "one of the first things that comes up says
+           78% of employees and than later it says 73%?" — both are real,
+           separately-sourced stats about different specific claims (this
+           one: losing sleep over financial stress; S6's 73%: money being
+           the #1 stress source) — American Academy of Sleep Medicine, 2025
+           vs. Bank of America Employee Financial Wellness Study, 2025. The
+           actual bug was that only S6 showed its citation — this one had
+           none, so two different real numbers about "employees" and
+           "stress" looked like the same claim contradicting itself. Added
+           the missing citation rather than changing the stat. -->
+      <div class="citation">Source: American Academy of Sleep Medicine, 2025.</div>
     </div>
   </div>
 
