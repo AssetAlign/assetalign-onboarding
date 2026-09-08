@@ -25,6 +25,19 @@ function aaIsOwner(){
     return localStorage.getItem('aa_owner')==='1';
   }catch(e){return false;}
 }
+// Tags the alert with who it actually was, when the link carries a real
+// name (every personalized test link — Alex's, Keiron's, etc. — already
+// includes ?first_name=&last_name=&email=). Falls back to "Unknown
+// visitor" for a bare/untagged link rather than guessing.
+function aaVisitorLabel(){
+  try{
+    var p=new URLSearchParams(window.location.search);
+    var first=p.get('first_name'),last=p.get('last_name'),email=p.get('email');
+    var name=[first,last].filter(Boolean).join(' ');
+    if(!name && !email) return null;
+    return (name||'Unknown name')+(email?' ('+email+')':'');
+  }catch(e){return null;}
+}
 function aaSendVisit(geo){
   var device=aaGetDevice();
   var pageUrl=window.location.href;
@@ -32,10 +45,11 @@ function aaSendVisit(geo){
   var loc=geo?((geo.city||'?')+', '+(geo.region||'?')+', '+(geo.country_name||geo.country||'?')):'unavailable';
   var ip=geo?(geo.ip||'?'):'unavailable';
   var net=geo?(geo.org||geo.asn||'?'):'unavailable';
+  var who=aaVisitorLabel();
   emailjs.send('service_jy3zs68','template_a3slvpn',{
     to_email:'alex@assetalign.net',
-    subject:'AssetAlign Onboarding — Opened',
-    message:'Someone just opened the AssetAlign Onboarding prototype.\n\nLocation: '+loc+'\nIP: '+ip+'\nNetwork / ISP: '+net+'\nDevice: '+device+'\nCame from: '+referrer+'\nTime: '+aaGetTimestamp()+'\nFull URL: '+pageUrl,
+    subject:'AssetAlign Onboarding — Opened'+(who?' by '+who:''),
+    message:(who?'Who: '+who+'\n\n':'Someone just opened the AssetAlign Onboarding prototype (no name on this link).\n\n')+'Location: '+loc+'\nIP: '+ip+'\nNetwork / ISP: '+net+'\nDevice: '+device+'\nCame from: '+referrer+'\nTime: '+aaGetTimestamp()+'\nFull URL: '+pageUrl,
     name:'Onboarding visitor',
     email:'noreply@assetalign.net',
     reply_to:'noreply@assetalign.net'
@@ -142,6 +156,25 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .pri-title { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-bottom: 2px; }
 .pri-sub { font-size: 12px; color: #666; }
 .pri-rank { width: 24px; height: 24px; border-radius: 50%; background: #1a3a5c; color: #fff; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+/* 2026-09-08, per Alex: multiple testers didn't realize the priority list
+   was drag-to-reorder — the only cue was a `cursor:grab` (invisible until
+   you already hover) and a plain numbered circle, easy to read as a static
+   index rather than something you can pick up and move. A universally-
+   recognized grip-dots handle makes "this is draggable" legible at a
+   glance, without touching the mobile tap-to-reorder buttons (already the
+   right affordance for touch, where a drag handle means nothing). */
+.pri-drag-handle { color: #ccc; font-size: 16px; line-height: 1; flex-shrink: 0; letter-spacing: -2px; }
+@media (max-width: 700px) { .pri-drag-handle { display: none; } }
+/* 2026-09-08 — tap-to-reorder fallback for touch devices, see movePriCard().
+   Hidden by default (desktop keeps its existing drag-only experience
+   untouched) and shown only below 700px, where native drag doesn't work
+   at all. */
+.pri-reorder-mobile { display: none; flex-direction: column; gap: 4px; flex-shrink: 0; }
+.pri-reorder-mobile button { width: 34px; height: 34px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); background: #f7f5f0; color: #1a3a5c; font-size: 13px; cursor: pointer; padding: 0; }
+.pri-reorder-mobile button:active { background: #ece8de; }
+@media (max-width: 700px) {
+  .pri-reorder-mobile { display: flex; }
+}
 .rec-pill { position: absolute; top: -9px; left: 12px; background: #c8a84b; color: #fff; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
 .focus-banner { background: #1a3a5c; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
 .focus-title { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 6px; }
@@ -364,12 +397,12 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
 .disclosure-header { padding: 22px 26px 16px; border-bottom: 0.5px solid rgba(0,0,0,0.08); flex-shrink: 0; }
 .disclosure-header h2 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
 .disclosure-header p { font-size: 12.5px; color: #666; }
-.disclosure-body { padding: 18px 26px; overflow-y: auto; flex: 1; font-size: 12.5px; color: #333; line-height: 1.65; }
-.disclosure-body h4 { font-size: 11px; font-weight: 700; color: #1a3a5c; text-transform: uppercase; letter-spacing: 0.08em; margin: 14px 0 5px; }
+.disclosure-body { padding: 18px 26px; overflow-y: auto; flex: 1; font-size: 11px; color: #333; line-height: 1.55; }
+.disclosure-body h4 { font-size: 10.5px; font-weight: 700; color: #1a3a5c; text-transform: uppercase; letter-spacing: 0.08em; margin: 14px 0 5px; }
 .disclosure-body h4:first-child { margin-top: 0; }
 .disclosure-body p { margin-bottom: 10px; }
 .disclosure-footer { padding: 16px 26px 22px; border-top: 0.5px solid rgba(0,0,0,0.08); flex-shrink: 0; }
-.disclosure-check-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; cursor: pointer; font-size: 12px; color: #444; line-height: 1.5; }
+.disclosure-check-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; cursor: pointer; font-size: 11px; color: #444; line-height: 1.5; }
 .disclosure-check-row input { margin-top: 2px; flex-shrink: 0; }
 .disclosure-scroll-hint { font-size: 11px; font-weight: 600; color: #c8a84b; text-align: center; margin-bottom: 10px; }
 .btn-disclose-agree { display: block; width: 100%; padding: 11px; background: #1a3a5c; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; font-family: inherit; }
@@ -411,8 +444,13 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
            already established on the real dashboard (.decision-banner,
            .marketplace-rail) so the positioning is consistent from the
            very first screen through to the dashboard someone lands on
-           later, not a new phrase invented just for here. -->
-      <div class="tagline">Your Financial Decision Engine. Powered By Your Credits.</div>
+           later, not a new phrase invented just for here.
+           2026-09-07 update, per Alex: "the problem with the credits line
+           is they won't fully understand what credits are, we haven't
+           really introduced that concept yet" — dropped "Powered By Your
+           Credits" (premature jargon on screen 1) in favor of plain,
+           immediate positioning instead. -->
+      <div class="tagline">Your One Place for Every Financial Decision.</div>
       <hr class="divider">
       <!-- NOTE: No "partner" language — employer simply makes this available -->
       <!-- s1EmployerName is populated from the ?employer= URL param passed in the welcome email link -->
@@ -423,7 +461,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
            Work" 3-box, folded into the existing credits sentence rather
            than a new paragraph/screen, matching the standing "don't
            overload S1" constraint from earlier this same session. -->
-      <p style="font-size:12px;color:#1a1a1a;margin-bottom:4px;">People usually make these decisions in isolation. We brought them together for you — and reward you with Align Credits, just like hotel points: earn them, grow them, spend them across our partners. Your info's already loaded — take the next 2 minutes to change your financial future.</p>
+      <p style="font-size:12px;color:#1a1a1a;margin-bottom:4px;">People usually make these decisions in isolation. We brought them together for you — and reward you with Align Credits. Unlike airline miles or credit card points, where 100,000 might get you $50, every Align Credit is worth a real $1 toward advice, insurance, tax prep, and more. Your info's already loaded — take the next 2 minutes to change your financial future.</p>
       <p style="font-size:11px;color:#aaa;margin-bottom:0;">Your plan is already covered by your employer — it's completely up to you whether you choose to work with an advisor. Your employer never sees your information.</p>
       <button class="btn-p" onclick="go(2)">Verify My Info &amp; Get Started →</button>
     </div>
@@ -486,7 +524,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <div style="font-size:18px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">First things first —</div>
       <div style="font-size:14px;color:#1a1a1a;margin-bottom:4px;">What's the biggest financial focus for you right now?</div>
       <div style="font-size:12px;color:#666;margin-bottom:0.75rem;">Your #1 shapes everything we do for you.</div>
-      <div style="font-size:11px;color:#999;font-style:italic;margin-bottom:0.6rem;">We've started these in the order that tends to matter most at your stage — drag to reorder if that's not you.</div>
+      <div style="font-size:12px;color:#666;margin-bottom:0.6rem;">We've started these in the order that tends to matter most at your stage. <strong style="color:#1a3a5c;">⠿ Drag any card to reorder</strong> — your #1 spot is what shapes everything we do for you.</div>
       <div class="priority-grid" id="priGrid"></div>
       <button class="btn-p" onclick="selectPriority()">This looks right →</button>
     </div>
@@ -741,6 +779,18 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         <button class="filter-btn" id="filter-virtual" onclick="filterAdvisors('virtual')">💻 Virtual</button>
         <button class="filter-btn" id="filter-inperson" onclick="filterAdvisors('inperson')">📍 Local</button>
       </div>
+      <!-- 2026-09-08, real bug: two testers said the "📍 Local" filter
+           "didn't work" — it does technically filter, but the internal
+           advisorArchive only has 4 fictional advisors covering IL/MA/NY,
+           so anyone testing from another state got an empty/near-empty
+           list with no real next step. Per Alex: "can we actually link it
+           to the advisor directory" — shown only under the Local filter,
+           links out to the real submitted-advisor directory instead of a
+           dead end. Opens in a new tab so the in-progress match flow here
+           isn't lost. -->
+      <div id="localDirectoryLink" style="display:none;background:#f5f5f3;border-radius:10px;padding:12px 14px;margin-bottom:1rem;font-size:12px;color:#444;line-height:1.6;">
+        Our preview only covers a few advisors so far. For the full, searchable list of vetted local advisors, <a href="https://assetalign-advisor-directory.netlify.app" target="_blank" rel="noopener" style="color:#1a3a5c;font-weight:600;">browse the Advisor Directory →</a>
+      </div>
       <div id="altAdvisorsList"></div>
       <button class="btn-p" id="altBtn" style="opacity:0.4;pointer-events:none;" onclick="confirmAlt()">Select this advisor →</button>
       <button class="btn-ghost" onclick="go(11)">← Back to my top match</button>
@@ -822,21 +872,21 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <h4>Item 1. Who We Are</h4>
       <p>AssetAlign is a <strong>financial wellness enablement platform</strong>, operated by ABTW Corporation, which is registered as an investment adviser with the Massachusetts Securities Division. We connect you with the right financial solutions, efficiently — whether that's a vetted independent advisor or a trusted partner for insurance, estate planning, tax prep, or debt management. Advisors available through our platform are independent professionals, registered as investment advisers or broker-dealers in their own right; AssetAlign itself does not manage your investments or provide investment, legal, or tax advice directly.</p>
 
-      <h4>Item 2. How AssetAlign Makes Money</h4>
-      <p>AssetAlign may receive compensation — including referral fees and ongoing revenue share — from the financial advisors and Exchange partners (insurance, mortgage, estate planning, tax, and debt services) you connect with. This doesn't add to your cost. It may give us an incentive to favor advisors or partners who pay us more, so the decision to work with any of them is always yours to make independently. Mortgage-related compensation follows the additional rules set by the federal Real Estate Settlement Procedures Act (RESPA).</p>
-
-      <h4>Item 3. Align Credits</h4>
+      <h4>Item 2. Align Credits</h4>
       <p>Align Credits are a loyalty reward issued solely by AssetAlign. They carry no monetary value outside the AssetAlign platform, cannot be exchanged for cash, and may only be redeemed for services in the AssetAlign Exchange. Credits are available to use as soon as you earn them, with no waiting period, and are non-transferable.</p>
       <p>Because you can earn and spend credits across different services, they may encourage you to try something you wouldn't otherwise — make each choice on its own merits, not your credit balance.</p>
 
-      <h4>Item 4. Your Information</h4>
+      <h4>Item 3. Your Information</h4>
       <p>By using this platform, you consent to AssetAlign collecting and using your financial profile information — including goals, income range, and insurance information you provide — to facilitate advisor matching and partner recommendations. We may share relevant profile information with matched advisors and Exchange partners solely to facilitate service delivery. We do not sell your personal information to third parties.</p>
 
-      <h4>Item 5. No Guarantee</h4>
+      <h4>Item 4. No Guarantee</h4>
       <p>AssetAlign does not guarantee the suitability, performance, qualifications, or conduct of any matched advisor or Exchange partner. Advisor and partner matching is based on profile compatibility and is for informational purposes only. All financial decisions remain solely your responsibility.</p>
 
-      <h4>Item 6. Our Registration</h4>
+      <h4>Item 5. Our Registration</h4>
       <p>ABTW Corporation (d/b/a AssetAlign) is registered as an investment adviser with the Massachusetts Securities Division and is not registered with the U.S. Securities and Exchange Commission (SEC). You can independently verify our registration and review our Form ADV at <strong>adviserinfo.sec.gov</strong>, a free public tool covering both state- and SEC-registered advisers.</p>
+
+      <h4>Item 6. How AssetAlign Makes Money</h4>
+      <p>AssetAlign may receive compensation — including referral fees and ongoing revenue share — from the financial advisors and Exchange partners (insurance, mortgage, estate planning, tax, and debt services) you connect with. This doesn't add to your cost. It may give us an incentive to favor advisors or partners who pay us more, so the decision to work with any of them is always yours to make independently. Mortgage-related compensation follows the additional rules set by the federal Real Estate Settlement Procedures Act (RESPA).</p>
 
       <h4>Item 7. Questions</h4>
       <p>If you have questions about these disclosures or our compensation arrangements, please contact us at <strong>compliance@assetalign.net</strong> before proceeding.</p>
@@ -1446,7 +1496,8 @@ function renderPrimaryAdvisor(){
   const matchReasonNote = pick.reason === 'local'
     ? `<div style="font-size:11px;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">📍 Matched with someone local to you</div>`
     : pick.reason === 'inperson-fallback'
-    ? `<div style="font-size:11px;color:#854f0b;background:#faeeda;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.6rem;">We don't have someone local to you yet — here's your next best match</div>`
+    ? `<div style="font-size:11px;color:#854f0b;background:#faeeda;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:0.2rem;">We don't have someone local to you yet — here's your next best match</div>
+       <div style="font-size:11px;color:#666;margin-bottom:0.6rem;">Want to keep looking? <a href="https://assetalign-advisor-directory.netlify.app" target="_blank" rel="noopener" style="color:#1a3a5c;font-weight:600;">Browse the full Advisor Directory →</a></div>`
     : '';
 
   const photoHtml = a.photo
@@ -1717,7 +1768,9 @@ function renderAltAdvisors(filter){
 
   const list = document.getElementById('altAdvisorsList');
   if(!pool.length){
-    list.innerHTML = '<div style="text-align:center;padding:24px;color:#999;font-size:13px;">No advisors match this filter. Try "All" to see everyone.</div>';
+    list.innerHTML = filter === 'inperson'
+      ? '<div style="text-align:center;padding:24px;color:#999;font-size:13px;">No local matches in this preview yet — see the Advisor Directory link above, or try "All" to see everyone.</div>'
+      : '<div style="text-align:center;padding:24px;color:#999;font-size:13px;">No advisors match this filter. Try "All" to see everyone.</div>';
     return;
   }
 
@@ -1758,6 +1811,8 @@ function filterAdvisors(filter){
   ['all','virtual','inperson'].forEach(f => {
     document.getElementById('filter-'+f).classList.toggle('active', f===filter);
   });
+  const dirLink = document.getElementById('localDirectoryLink');
+  if(dirLink) dirLink.style.display = (filter === 'inperson') ? 'block' : 'none';
   renderAltAdvisors(filter);
 }
 
@@ -1790,9 +1845,11 @@ function buildGrid(){
     el.className = 'pri-card'+(p.id===rec?' recommended':'');
     el.draggable = true; el.dataset.id = p.id;
     el.innerHTML = (p.id===rec?'<div class="rec-pill">Suggested for you</div>':'')+
+      '<div class="pri-drag-handle" aria-hidden="true">⠿</div>'+
       '<div class="pri-icon '+p.cls+'">'+p.icon+'</div>'+
       '<div class="pri-body"><div class="pri-title">'+p.title+'</div><div class="pri-sub">'+p.sub+'</div></div>'+
-      '<div class="pri-rank">'+(i+1)+'</div>';
+      '<div class="pri-rank">'+(i+1)+'</div>'+
+      '<div class="pri-reorder-mobile"><button type="button" onclick="event.stopPropagation();movePriCard(this,-1)" aria-label="Move up">▲</button><button type="button" onclick="event.stopPropagation();movePriCard(this,1)" aria-label="Move down">▼</button></div>';
     el.addEventListener('dragstart',()=>{dragSrc=el;el.classList.add('dragging');});
     el.addEventListener('dragend',()=>{el.classList.remove('dragging');updateRanks();});
     el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag-over');});
@@ -1810,6 +1867,25 @@ function buildGrid(){
   });
 }
 function updateRanks(){ document.querySelectorAll('#priGrid .pri-rank').forEach((r,i)=>r.textContent=i+1); }
+// 2026-09-08, per Alex, real iPhone testing: "it doesn't let me grab and
+// drag when picking what's important to me" — native HTML5 drag-and-drop
+// (draggable=true / dragstart / drop, used above for desktop mouse users)
+// has no touch backing at all in any mobile browser; it silently does
+// nothing on a phone, with no error to go on. Rather than build a custom
+// touch-drag system (fragile, easy to get wrong on a real device without
+// being able to test it live here), tap-to-reorder buttons are a
+// guaranteed-reliable alternative: they only render on mobile widths (see
+// .pri-reorder-mobile's CSS) so desktop's existing drag experience is
+// completely untouched.
+function movePriCard(btn, dir){
+  const card = btn.closest('.pri-card');
+  const grid = document.getElementById('priGrid');
+  const sibling = dir === -1 ? card.previousElementSibling : card.nextElementSibling;
+  if(!sibling) return;
+  if(dir === -1) grid.insertBefore(card, sibling);
+  else grid.insertBefore(sibling, card);
+  updateRanks();
+}
 function selectPriority(){
   selectedPriority = document.querySelector('#priGrid .pri-card').dataset.id;
   const f = focusContent[selectedPriority];
@@ -2217,15 +2293,33 @@ function goToDashboard(){
   // Zebra nudge without passing full birthdate through a URL. Same
   // computeAge() S3's priority ordering already uses — one source of truth.
   const age = computeAge();
+  // 2026-09-07, per Alex, on the dashboard's Nudge Cadence enrollment
+  // form: "for the email, we already have that, so that should auto
+  // populate." We do — same real value already shown on S14 (see
+  // displayEmail/dashScheduledEmail above) — it just wasn't forwarded to
+  // the dashboard/marketplace session before now, same as every other
+  // real field here.
+  const email = urlParams.get('email') || finchProfile.email;
 
   const handoffParams = new URLSearchParams({
     goal: selectedPriority,
     name: firstName,
     credits: 25,
     state: homeState,
-    age: age
+    age: age,
+    email: email
   });
   if(selectedMarital) handoffParams.set('marital', selectedMarital);
+  // 2026-09-08, real bug: the dashboard's "Your Advisor" card was hardcoded
+  // to a name ("Sarah Mitchell") that doesn't even exist in this file's own
+  // advisorArchive — never actually reflected who pickPrimaryAdvisor()/
+  // confirmAlt() matched this person with. schedulingAdvisor holds the
+  // real, final advisor by the time this fires (set on every path: primary
+  // pick, alt-advisor confirm, post-disclosure reschedule).
+  if(schedulingAdvisor){
+    handoffParams.set('advisor_name', schedulingAdvisor.name);
+    handoffParams.set('advisor_creds', schedulingAdvisor.credentials);
+  }
   // Only send a real balance if at least one of the relevant questions was
   // actually answered — if all were skipped entirely, leave it unset so the
   // dashboard falls back to its own fully-illustrative default instead of
