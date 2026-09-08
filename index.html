@@ -1660,6 +1660,27 @@ function emailAdvisorInvite(name){
 // formula/percentages are never shown in the UI, only the resulting
 // credit number — see the credit-economics reference memory.
 const NETWORK_GAP_CREDIT_RATE = 0.01 * 0.375 * 0.25;
+// 2026-09-08, per Alex: "do we want to highlight that on our platform. one
+// credit equals one dollar.. and than maybe do the projection there" — same
+// two reinforcements added to the dashboard's own credit messaging earlier
+// today (see assetalign-dashboard-v2's "Unlike airline miles..." copy),
+// applied here too: (1) state the real dollar value next to the credit
+// count, not just a bare number, (2) show the same 5-year growth
+// projection the dashboard's "Power of Your Credits" section already
+// computes (renderCreditProjection in assetalign-dashboard-v2/index.html) —
+// identical AUM_GROWTH_RATE/REL_CREDIT_RATE/ENGAGEMENT_PER_YEAR, so the two
+// numbers a member sees (here, hypothetically, vs. later, for real) never
+// disagree about the underlying math.
+const NETWORK_GAP_AUM_GROWTH_RATE = 0.10, NETWORK_GAP_ENGAGEMENT_PER_YEAR = 100;
+function networkGapCreditsThroughYear(aum0, years){
+  let total = 0;
+  for(let y = 1; y <= years; y++){
+    const aumAtStartOfYear = aum0 + aum0 * NETWORK_GAP_AUM_GROWTH_RATE * (y - 1);
+    total += aumAtStartOfYear * NETWORK_GAP_CREDIT_RATE;
+  }
+  total += NETWORK_GAP_ENGAGEMENT_PER_YEAR * years;
+  return Math.round(total);
+}
 function calcNetworkGap(){
   const raw = document.getElementById('networkGapAssets').value.replace(/[^0-9.]/g, '');
   const assets = parseFloat(raw);
@@ -1669,10 +1690,12 @@ function calcNetworkGap(){
     result.innerHTML = '<div style="font-size:11px;color:#b23a2c;margin-top:6px;">Enter a real number to see your estimate.</div>';
     return;
   }
-  const annualCredits = Math.round(assets * NETWORK_GAP_CREDIT_RATE);
+  const annualCredits = networkGapCreditsThroughYear(assets, 1);
+  const value5yr = networkGapCreditsThroughYear(assets, 5);
   lastNetworkGapCredits = annualCredits;
   result.innerHTML = `<div style="background:#eaf3de;border-radius:8px;padding:12px 14px;margin-top:8px;">
-    <div style="font-size:13px;color:#27500a;line-height:1.5;">With an Align-matched advisor, that's about <b>${annualCredits.toLocaleString()} Align Credits back every year</b> — real value you're not getting today.</div>
+    <div style="font-size:13px;color:#27500a;line-height:1.5;">With an Align-matched advisor, that's about <b>${annualCredits.toLocaleString()} Align Credits back every year</b>. Unlike airline miles or credit card points, every Align Credit is worth a real <b>$1</b> — so that's <b>$${annualCredits.toLocaleString()}</b> of real value you're not getting today.</div>
+    <div style="font-size:12px;color:#27500a;margin-top:8px;padding-top:8px;border-top:1px solid rgba(39,80,10,0.15);">Over 5 years, as those assets grow with a real plan behind them, that's about <b>$${value5yr.toLocaleString()}</b>.</div>
   </div>`;
 }
 function resetNetworkCheck(){
