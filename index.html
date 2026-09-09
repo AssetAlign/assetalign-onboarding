@@ -2485,6 +2485,12 @@ function goToDashboard(){
   // name/email, not a state), so that always falls to the S2 State field.
   const firstName = (isGift && giftFieldVal('f_name')) || urlParams.get('first_name') || finchProfile.first_name;
   const homeState = urlParams.get('home_state') || (isGift && giftFieldVal('f_state').toUpperCase()) || finchProfile.home_state;
+  // 2026-09-09 — forwarded for the dashboard's "Your Advisor" panel nudge
+  // copy ("<employer> made AssetAlign available to you..."). Not sent at
+  // all in gift mode — an independent/gift enrollee has no real employer
+  // relationship (see isGift's own dev note), so the dashboard falls back
+  // to its own generic "your employer" text rather than showing a fake one.
+  const employerDisplay = !isGift && (urlParams.get('employer_name') || finchProfile.employer_name);
   // Age (not raw DOB) — enough for the "drivers your age" stat hook on the
   // Zebra nudge without passing full birthdate through a URL. Same
   // computeAge() S3's priority ordering already uses — one source of truth.
@@ -2522,6 +2528,7 @@ function goToDashboard(){
     handoffParams.set('advisor_creds', schedulingAdvisor.credentials);
     if(schedulingAdvisor.location) handoffParams.set('advisor_location', schedulingAdvisor.location);
   }
+  if(employerDisplay) handoffParams.set('employer_name', employerDisplay);
   // 2026-09-09, per Alex: the dashboard-side "Your Advisor" rail needs the
   // actual booked date/time to show "Meeting: <date>" (or, once that date
   // has passed, "Last meeting: <date>") instead of a generic nudge. Only
