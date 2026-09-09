@@ -29,13 +29,32 @@ function aaIsOwner(){
 // name (every personalized test link — Alex's, Keiron's, etc. — already
 // includes ?first_name=&last_name=&email=). Falls back to "Unknown
 // visitor" for a bare/untagged link rather than guessing.
+//
+// 2026-09-09 — REF CODES, per Alex: for the broker demo blast, every
+// recipient gets the SAME fake ?first_name=John&last_name=Smith demo
+// identity (that's the point — a consistent, obviously-fake sample
+// person), so name-based tagging can't tell brokers apart the way it does
+// for Alex's/Keiron's own personalized links. He wants per-recipient
+// tracking without the link itself looking personalized — "i don't want
+// to do something so easy as they can see their name... use initials at
+// the end so it's not apparent." A short &ref=<initials> param (reads like
+// an ordinary campaign/referral code, not a personal identifier) is
+// layered ONTO the shared demo link and takes priority in the alert label
+// over the (identical, uninformative) demo name — e.g.
+// ?demo=1&first_name=John&last_name=Smith&dob=...&ref=KO tags the alert
+// "Opened by John Smith [ref: KO]" so Alex can tell Keiron opened it
+// without "KO" or a full name ever appearing as the visible identity on
+// the page itself.
 function aaVisitorLabel(){
   try{
     var p=new URLSearchParams(window.location.search);
     var first=p.get('first_name'),last=p.get('last_name'),email=p.get('email');
+    var ref=p.get('ref');
     var name=[first,last].filter(Boolean).join(' ');
-    if(!name && !email) return null;
-    return (name||'Unknown name')+(email?' ('+email+')':'');
+    var label=null;
+    if(name || email){ label=(name||'Unknown name')+(email?' ('+email+')':''); }
+    if(ref){ label=(label?label+' [ref: '+ref+']':'[ref: '+ref+']'); }
+    return label;
   }catch(e){return null;}
 }
 function aaSendVisit(geo){
@@ -1259,6 +1278,15 @@ let selectedBalanceIRA = null; // captured from S9 — see goToDashboard() + bra
 let selectedSavingsBalance = null; // captured from S9 — see goToDashboard() + bracketToMidpoint()
 let calViewMonth = null; // mock Calendly widget — month currently shown
 let calSelectedDate = null; // mock Calendly widget — date picked before showing times
+// 2026-09-09, per Alex: persistent "Your Advisor" rail on the dashboard
+// side needs the actual booked date/time, not just whether a meeting
+// happened — bookedMeetingDate/bookedMeetingTimeLabel hold the FINAL
+// booked values through to goToDashboard() (calSelectedDate above gets
+// reset to null by backToCalMonth()/re-opening the widget, so it isn't
+// reliable once the user has clicked around; these two are only ever set
+// once, at the moment a time is actually confirmed).
+let bookedMeetingDate = null;
+let bookedMeetingTimeLabel = null;
 
 const priorityLabels = {debt:'Pay down debt',home:'Buy a home',invest:'Build wealth',retire:'Retire comfortably',protect:'Protect my family'};
 const goalMatchLabels = {home:'home buying',debt:'debt elimination',invest:'wealth building',retire:'retirement planning',protect:'family protection'};
@@ -1568,6 +1596,8 @@ function backToCalMonth(){
 function confirmCalTime(el){
   document.querySelectorAll('.cal-time-btn').forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
+  bookedMeetingDate = calSelectedDate;
+  bookedMeetingTimeLabel = el.textContent;
   setTimeout(completeBooking, 450);
 }
 
@@ -2490,6 +2520,17 @@ function goToDashboard(){
   if(schedulingAdvisor){
     handoffParams.set('advisor_name', schedulingAdvisor.name);
     handoffParams.set('advisor_creds', schedulingAdvisor.credentials);
+    if(schedulingAdvisor.location) handoffParams.set('advisor_location', schedulingAdvisor.location);
+  }
+  // 2026-09-09, per Alex: the dashboard-side "Your Advisor" rail needs the
+  // actual booked date/time to show "Meeting: <date>" (or, once that date
+  // has passed, "Last meeting: <date>") instead of a generic nudge. Only
+  // set when a real booking happened on this pass through the flow — see
+  // bookedMeetingDate's own dev note above for why calSelectedDate itself
+  // isn't reliable here.
+  if(bookedMeetingDate && bookedMeetingTimeLabel){
+    handoffParams.set('meeting_date', bookedMeetingDate.toISOString().slice(0,10));
+    handoffParams.set('meeting_time', bookedMeetingTimeLabel);
   }
   // Only send a real balance if at least one of the relevant questions was
   // actually answered — if all were skipped entirely, leave it unset so the
@@ -2519,6 +2560,21 @@ function goToDashboard(){
 // ═══════════════════════════════════════════════════
 window.addEventListener('message', function(e){
   if(e.data && e.data.event === 'calendly.event_scheduled'){
+    // Real Calendly embeds include the actual booked start time in the
+    // event payload — opportunistically capture it the same way the mock
+    // widget does above, so the dashboard's advisor rail still gets a real
+    // date once Alex plugs in an actual advisor.calendly link (none are
+    // set yet — see the advisorArchive dev notes). Falls back gracefully
+    // (rail just shows the "haven't booked yet" state) if the payload
+    // shape doesn't include it.
+    try{
+      const startTime = e.data.payload && e.data.payload.event && e.data.payload.event.start_time;
+      if(startTime){
+        const d = new Date(startTime);
+        bookedMeetingDate = d;
+        bookedMeetingTimeLabel = d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+      }
+    }catch(e){}
     completeBooking();
   }
 });
