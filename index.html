@@ -1276,6 +1276,17 @@ let selectedMarital = null; // captured from the S9 marital-status question — 
 let selectedBalance401k = null; // captured from S9 — collected for context, NOT counted as billable/manageable AUM — see goToDashboard()
 let selectedBalanceIRA = null; // captured from S9 — see goToDashboard() + bracketToMidpoint()
 let selectedSavingsBalance = null; // captured from S9 — see goToDashboard() + bracketToMidpoint()
+// 2026-09-09 — real gap found during a Financial Passport audit: S9 asks 9
+// real questions (allQuestions.financial/etc.) but renderQ()'s click
+// handler only ever stored 4 of them in named vars above. The other 5
+// (income/own_home/emergency/retire_contrib/market/involvement) were
+// visually selectable (a CSS class toggled) but never captured in any JS
+// variable at all — gone the instant the user moved to the next screen.
+// This generic store catches every question's answer by id, named vars
+// above are left in place (goToDashboard() already reads them directly),
+// and S9_TO_PASSPORT below forwards everything else through selectedAnswers.
+let selectedAnswers = {};
+const S9_TO_PASSPORT = { income: 'income', own_home: 'ownHome', emergency: 'emergencyFund', retire_contrib: 'retireContrib', balance_401k: 'balance401k', balance_ira: 'balanceIRA', savings_balance: 'balanceSavings', market: 'riskTolerance', involvement: 'involvement' };
 let calViewMonth = null; // mock Calendly widget — month currently shown
 let calSelectedDate = null; // mock Calendly widget — date picked before showing times
 // 2026-09-09, per Alex: persistent "Your Advisor" rail on the dashboard
@@ -2123,6 +2134,7 @@ function renderQ(q,p){
       opts.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('selected','auto-selected'));
       const tag = opts.querySelector('.auto-tag'); if(tag) tag.remove();
       this.classList.add('selected');
+      selectedAnswers[q.id] = o;
       if(q.id==='marital') selectedMarital = o;
       if(q.id==='balance_401k') selectedBalance401k = o;
       if(q.id==='balance_ira') selectedBalanceIRA = o;
@@ -2529,6 +2541,18 @@ function goToDashboard(){
     if(schedulingAdvisor.location) handoffParams.set('advisor_location', schedulingAdvisor.location);
   }
   if(employerDisplay) handoffParams.set('employer_name', employerDisplay);
+  // 2026-09-09 — Financial Passport schema expansion, per Alex: "we want
+  // all information... anytime we can store data... we need it all."
+  // These two were shown once on S2 (initFromFinch()) and never forwarded
+  // anywhere past it — same real Finch fields as employer_name above, just
+  // never carried through. Recomputed here rather than reading module vars
+  // from initFromFinch() (those are function-scoped) — same exact formula.
+  if(!isGift){
+    const startMs = new Date(finchProfile.start_date).getTime();
+    const years = Math.floor((Date.now() - startMs) / (365.25 * 24 * 60 * 60 * 1000));
+    handoffParams.set('yearsAtCompany', years === 1 ? '1 year' : years + ' years');
+    handoffParams.set('retirementPlanEnrolled', finchProfile.retirement_enrolled ? (finchProfile.retirement_type + ' enrolled') : 'No plan on file');
+  }
   // 2026-09-09, per Alex: the dashboard-side "Your Advisor" rail needs the
   // actual booked date/time to show "Meeting: <date>" (or, once that date
   // has passed, "Last meeting: <date>") instead of a generic nudge. Only
@@ -2552,6 +2576,15 @@ function goToDashboard(){
     const balance = bracketToMidpoint(selectedBalanceIRA) + bracketToMidpoint(selectedSavingsBalance);
     handoffParams.set('balance', balance);
   }
+  // 2026-09-09 — forward every other real S9 answer too (see
+  // S9_TO_PASSPORT's own dev note above) — these used to be asked and then
+  // thrown away; now they land in the dashboard's Financial Passport under
+  // their canonical field names. marital/balance_401k/balance_ira/
+  // savings_balance are excluded here since they're already handled above
+  // by name (avoids setting the same fact under two different param names).
+  Object.keys(S9_TO_PASSPORT).forEach(function(qid){
+    if(selectedAnswers[qid]) handoffParams.set(S9_TO_PASSPORT[qid], selectedAnswers[qid]);
+  });
 
   // No artificial delay — S14 no longer shows in between, so there's
   // nothing on screen to hold for; go straight there.
