@@ -454,15 +454,23 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <hr class="divider">
       <!-- NOTE: No "partner" language — employer simply makes this available -->
       <!-- s1EmployerName is populated from the ?employer= URL param passed in the welcome email link -->
-      <p style="font-size:13px;color:#1a1a1a;margin-bottom:6px;">78% of employees lose sleep over financial stress. That's why <span id="s1EmployerName">your employer</span> has made AssetAlign available to you.</p>
+      <!-- 2026-09-09 — GIFT MODE (per Alex's "give the gift of financial
+           planning" idea backlog item): a member can invite a friend or
+           family member who ISN'T covered by any employer sponsoring
+           AssetAlign; AssetAlign enrolls that person directly instead of
+           through payroll. id="s1IntroLine" wraps this whole sentence
+           (not just the employer name) since "gave you a gift" doesn't
+           fit the "That's why X has made this available" sentence shape —
+           see initGiftMode() below for the ?gift=1 swap. -->
+      <p id="s1IntroLine" style="font-size:13px;color:#1a1a1a;margin-bottom:6px;">78% of employees lose sleep over financial stress. That's why <span id="s1EmployerName">your employer</span> has made AssetAlign available to you.</p>
       <!-- 2026-09-06, per Alex: "include it into a screen in the
            beginning.. just have it be additive" — the Earn/Grow/Spend
            framing already used on the real dashboard's "How Align Credits
            Work" 3-box, folded into the existing credits sentence rather
            than a new paragraph/screen, matching the standing "don't
            overload S1" constraint from earlier this same session. -->
-      <p style="font-size:12px;color:#1a1a1a;margin-bottom:4px;">People usually make these decisions in isolation. We brought them together for you — and reward you with Align Credits. Unlike airline miles or credit card points, where 100,000 might get you $50, every Align Credit is worth a real $1 toward advice, insurance, tax prep, and more. Your info's already loaded — take the next 2 minutes to change your financial future.</p>
-      <p style="font-size:11px;color:#aaa;margin-bottom:0;">Your plan is already covered by your employer — it's completely up to you whether you choose to work with an advisor. Your employer never sees your information.</p>
+      <p style="font-size:12px;color:#1a1a1a;margin-bottom:4px;">People usually make these decisions in isolation. We brought them together for you — and reward you with Align Credits. Unlike airline miles or credit card points, where 100,000 might get you $50, every Align Credit is worth a real $1 toward advice, insurance, tax prep, and more. <span id="s1InfoLoadedNote">Your info's already loaded — take the next 2 minutes to change your financial future.</span></p>
+      <p id="s1EmployerNote" style="font-size:11px;color:#aaa;margin-bottom:0;">Your plan is already covered by your employer — it's completely up to you whether you choose to work with an advisor. Your employer never sees your information.</p>
       <button class="btn-p" onclick="go(2)">Verify My Info &amp; Get Started →</button>
       <!-- 2026-09-08, per Alex: "one of the first things that comes up says
            78% of employees and than later it says 73%?" — both are real,
@@ -474,7 +482,10 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
            none, so two different real numbers about "employees" and
            "stress" looked like the same claim contradicting itself. Added
            the missing citation rather than changing the stat. -->
-      <div class="citation">Source: American Academy of Sleep Medicine, 2025.</div>
+      <!-- 2026-09-09 — GIFT MODE hides this: initGiftMode() replaces the
+           78%-stat sentence above with the gift-invite line, so this
+           citation would otherwise dangle with no stat left to support. -->
+      <div class="citation" id="s1Citation">Source: American Academy of Sleep Medicine, 2025.</div>
     </div>
   </div>
 
@@ -485,8 +496,8 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
   <div class="screen" id="s2">
     <div class="nav-row"><button class="back" onclick="go(1)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
     <div class="card">
-      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Confirm your details</div>
-      <div style="font-size:12px;color:#666;margin-bottom:1rem;">We've filled in what we already have on file. Let us know if anything looks off.</div>
+      <div id="s2Title" style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Confirm your details</div>
+      <div id="s2Sub" style="font-size:12px;color:#666;margin-bottom:1rem;">We've filled in what we already have on file. Let us know if anything looks off.</div>
 
       <!--
         ═══════════════════════════════════════════════════════
@@ -515,9 +526,13 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
       <div class="field"><label>Full name</label><div class="fval" id="f_name">—</div></div>
       <div class="field"><label>Date of birth</label><div class="fval" id="f_dob">—</div></div>
       <div class="field"><label>ZIP code</label><div class="fval" id="f_zip">—</div></div>
-      <div class="field"><label>Employer</label><div class="fval" id="f_employer">—</div></div>
-      <div class="field"><label>Years at company</label><div class="fval" id="f_years">—</div></div>
-      <div class="field"><label>Retirement plan</label><div class="fval" id="f_retirement">—</div></div>
+      <!-- 2026-09-09 — GIFT MODE only: hidden by default, shown by
+           initGiftMode() below for an independent (non-employer) enrollee
+           who has no Finch/payroll state on file to prefill from. -->
+      <div class="field" id="s2RowState" style="display:none;"><label>State</label><div class="fval" id="f_state">—</div></div>
+      <div class="field" id="s2RowEmployer"><label>Employer</label><div class="fval" id="f_employer">—</div></div>
+      <div class="field" id="s2RowYears"><label>Years at company</label><div class="fval" id="f_years">—</div></div>
+      <div class="field" id="s2RowRetirement"><label>Retirement plan</label><div class="fval" id="f_retirement">—</div></div>
 
       <button class="btn-p" id="s2ConfirmBtn" onclick="go(3)">Yes, this looks correct →</button>
       <button class="btn-o" id="s2WrongBtn" onclick="enableFieldEditing()">Something looks wrong</button>
@@ -619,7 +634,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         <div style="font-size:12px;color:#999;margin-bottom:2px;">Typically costs</div>
         <div class="price-strike" style="font-size:15px;margin-bottom:10px;">$2,500 – $3,500</div>
         <div style="font-size:30px;font-weight:700;color:#27500a;line-height:1;">$0</div>
-        <div style="background:#eaf3de;color:#27500a;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-top:8px;display:inline-block;">Covered by your employer</div>
+        <div id="s6EmployerBadge" style="background:#eaf3de;color:#27500a;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-top:8px;display:inline-block;">Covered by your employer</div>
       </div>
       <div style="font-size:15px;font-weight:500;color:#1a3a5c;text-align:center;margin:0.75rem 0 0.5rem;">The difference isn’t luck. It’s having a real plan — built by someone who knows what they’re doing.</div>
       <button class="btn-p" onclick="goTransition()">Get my plan →</button>
@@ -728,7 +743,7 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
     <div class="nav-row"><button class="back" onclick="go(11)">← Back</button><span class="step-ct">Section 3 — Schedule</span></div>
     <div class="card">
 
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:1rem;">No charge, no commitment — covered by your employer</div>
+      <div id="s12EmployerBadge" style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3b6d11;background:#eaf3de;display:inline-block;padding:3px 10px;border-radius:99px;margin-bottom:1rem;">No charge, no commitment — covered by your employer</div>
 
       <div style="font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:4px;">Last step — grab a time with <span id="schedAdvisorName">your advisor</span>.</div>
       <!-- 2026-09-05, per Alex: reinforce "no charge, no commitment" and
@@ -1030,6 +1045,24 @@ const advisorArchive = [
 // ═══════════════════════════════════════════════════
 const urlParams = new URLSearchParams(window.location.search);
 
+// 2026-09-09 — GIFT MODE, per Alex's "give the gift of financial planning"
+// idea backlog item: a member can invite a friend/family member who is NOT
+// covered by any employer sponsoring AssetAlign — AssetAlign enrolls that
+// person directly, independent of any employer relationship. There's no
+// Finch/payroll record for someone like this, so ?gift=1 skips the
+// employer-verify step entirely (see initGiftMode() below) instead of
+// showing them a fake employer profile. ?from= names who sent the invite
+// (see assetalign-dashboard-v2's "Give the Gift" card, which builds this
+// link). Real production version still needs its own backend enrollment
+// path outside the employer/Finch flow — prototype-only here, same as the
+// rest of this file's Finch integration.
+const isGift = urlParams.get('gift') === '1';
+const giftFromName = (urlParams.get('from') || '').trim();
+function giftFieldVal(id){
+  const el = document.getElementById(id);
+  return (el && 'value' in el) ? el.value.trim() : '';
+}
+
 // MOCK — replace with real Finch API response in production
 const finchProfile = {
   // POST /employer/individual
@@ -1062,6 +1095,7 @@ const finchProfile = {
 };
 
 function initFromFinch(){
+  if (isGift) { initGiftMode(); return; }
   const p = finchProfile;
 
   // Employer display name — prefer URL param so email link can override
@@ -1103,6 +1137,63 @@ function initFromFinch(){
   document.getElementById('f_retirement').innerHTML  = p.retirement_enrolled
     ? `${p.retirement_type} enrolled <span class="badge-g">Active</span>`
     : `No plan on file <span class="badge-a">Check with HR</span>`;
+}
+
+// 2026-09-09 — GIFT MODE (see the ?gift=1/isGift dev note above urlParams).
+// No Finch data exists for an independent enrollee, so this skips straight
+// to a blank, real editable form instead of a "confirm what we have on
+// file" screen — there's nothing on file. Name is pre-filled if the person
+// who sent the gift provided one (see assetalign-dashboard-v2's "Give the
+// Gift" card); DOB/State/ZIP are always blank since nothing else knows
+// them. Employer/Years/Retirement rows don't apply here and are hidden.
+function initGiftMode(){
+  const displayFrom = giftFromName || 'A friend';
+
+  const s1intro = document.getElementById('s1IntroLine');
+  if (s1intro) s1intro.innerHTML = '<strong>' + displayFrom + '</strong> thought you\'d want this too — a complimentary financial plan, no employer required.';
+  const s1note = document.getElementById('s1EmployerNote');
+  if (s1note) s1note.textContent = 'This is completely free, with no obligation to work with an advisor. Nothing here is shared with anyone but you.';
+  const s1infoNote = document.getElementById('s1InfoLoadedNote');
+  if (s1infoNote) s1infoNote.textContent = 'It takes about 3 minutes to get started.';
+  const s1citation = document.getElementById('s1Citation');
+  if (s1citation) s1citation.style.display = 'none';
+
+  const s2title = document.getElementById('s2Title');
+  if (s2title) s2title.textContent = 'Tell us a bit about yourself';
+  const s2sub = document.getElementById('s2Sub');
+  if (s2sub) s2sub.textContent = 'This helps us personalize your plan — nothing here is shared with anyone.';
+
+  ['s2RowEmployer', 's2RowYears', 's2RowRetirement'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const stateRow = document.getElementById('s2RowState');
+  if (stateRow) stateRow.style.display = '';
+
+  [
+    { id: 'f_name', type: 'text', placeholder: 'Full name', value: urlParams.get('first_name') || '' },
+    { id: 'f_dob', type: 'date', placeholder: '', value: '' },
+    { id: 'f_zip', type: 'text', placeholder: 'ZIP code', value: '' },
+    { id: 'f_state', type: 'text', placeholder: 'e.g. MA', value: '' }
+  ].forEach(function(f){
+    const el = document.getElementById(f.id);
+    if (!el) return;
+    const input = document.createElement('input');
+    input.type = f.type;
+    input.id = f.id;
+    input.className = 'fval-input';
+    if (f.placeholder) input.placeholder = f.placeholder;
+    if (f.value) input.value = f.value;
+    el.replaceWith(input);
+  });
+  document.getElementById('s2ConfirmBtn').style.display = 'none';
+  document.getElementById('s2WrongBtn').style.display = 'none';
+  document.getElementById('s2SaveBtn').style.display = 'block';
+
+  const s6Badge = document.getElementById('s6EmployerBadge');
+  if (s6Badge) s6Badge.textContent = 'Covered by your gift invitation';
+  const s12Badge = document.getElementById('s12EmployerBadge');
+  if (s12Badge) s12Badge.textContent = 'No charge, no commitment — from your gift invitation';
 }
 
 // "Something looks wrong" used to just continue to S3 like the "looks
@@ -1159,7 +1250,10 @@ const allPriorities = [
 // later Zebra-handoff age calc (goToDashboard()) so there's one source of
 // truth for "age" instead of two copies of the same DOB math.
 function computeAge(){
-  const dobStr = urlParams.get('dob') || finchProfile.dob;
+  // Gift mode: no ?dob= URL param exists (the referrer never knows a
+  // friend's DOB) — read the real value they typed into S2's date input
+  // instead, before falling back to the mock Finch profile.
+  const dobStr = urlParams.get('dob') || (isGift && giftFieldVal('f_dob')) || finchProfile.dob;
   const dob = new Date(dobStr + 'T00:00:00');
   const today = new Date();
   let age = today.getFullYear() - dob.getFullYear();
@@ -2329,8 +2423,13 @@ function goToDashboard(){
   // instead of re-asking — including prefilling the Zebra nudge's "state"
   // field and skipping a second marital-status ask. See v2's
   // applyPersonalization() on assetalign-dashboard-v2.
-  const firstName = urlParams.get('first_name') || finchProfile.first_name;
-  const homeState = urlParams.get('home_state') || finchProfile.home_state;
+  // Gift mode: prefer whatever's actually in the S2 input right now (it was
+  // pre-filled from ?first_name= if the referrer gave one, but the friend
+  // may have corrected it) over the static URL param; ?home_state= never
+  // exists in gift mode at all (the referrer's invite form only asks for a
+  // name/email, not a state), so that always falls to the S2 State field.
+  const firstName = (isGift && giftFieldVal('f_name')) || urlParams.get('first_name') || finchProfile.first_name;
+  const homeState = urlParams.get('home_state') || (isGift && giftFieldVal('f_state').toUpperCase()) || finchProfile.home_state;
   // Age (not raw DOB) — enough for the "drivers your age" stat hook on the
   // Zebra nudge without passing full birthdate through a URL. Same
   // computeAge() S3's priority ordering already uses — one source of truth.
@@ -2352,6 +2451,11 @@ function goToDashboard(){
     email: email
   });
   if(selectedMarital) handoffParams.set('marital', selectedMarital);
+  // Gift mode: this person has no employer relationship with AssetAlign at
+  // all — forward that so the dashboard can avoid the one tutorial line
+  // that otherwise wrongly credits "your employer" (see shared.js's
+  // aaResolveSession(), which reads this back in).
+  if(isGift) handoffParams.set('independent', '1');
   // 2026-09-08, real bug: the dashboard's "Your Advisor" card was hardcoded
   // to a name ("Sarah Mitchell") that doesn't even exist in this file's own
   // advisorArchive — never actually reflected who pickPrimaryAdvisor()/
