@@ -632,7 +632,20 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         <div class="stat-num" style="font-size:34px;">78%</div>
         <div style="font-size:12px;color:#666;">of employees lose sleep over financial stress</div>
       </div>
-      <div style="font-size:14px;font-weight:500;color:#1a3a5c;text-align:center;margin-bottom:1.1rem;">Most people don't have a plan — not because they don't care, but because no one's shown them where to start.</div>
+      <!-- SKUNKWORKS-tested, shipped to production 2026-09-12, per Alex:
+           "there is a bit of a jump.. ok great now we know your goal, now
+           let's talk about the best ways to accomplish that.. first thing
+           first, you can't do anything without a plan." Folds the "what is
+           a financial plan" explanation directly into this screen —
+           tried first as a separate delayed bubble on S1, rejected once
+           tested live (explained the concept before a goal even existed;
+           the real gap was this jump from goal-setting to the neighbor
+           pitch with no bridge). s6GoalPhrase is populated in go()'s n===6
+           branch from the same selectedPriority/priorityLabels the rest
+           of this file already uses (see goToTransition()) — real
+           personalization, not generic copy. -->
+      <div style="font-size:14px;font-weight:500;color:#1a3a5c;text-align:center;margin-bottom:0.6rem;">Now that we know you want to <span id="s6GoalPhrase">reach your goal</span>, let's talk about how to get there — first thing first, you can't make real progress without a plan.</div>
+      <div style="font-size:13px;color:#666;margin-bottom:1.1rem;line-height:1.6;">A plan looks different for everyone. Think of it less like a document and more like a decision-making engine — it tells you the right move at each fork in the road, so you avoid the decisions that can really set you back, and always gives you a real starting point. Most people don't have one, though — not because they don't care, but because no one's shown them where to start.</div>
       <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">Meet your neighbor.</div>
       <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">Same street. Same income. Same mortgage. Same expenses. Exact same financial situation — with one difference: a plan from a financial professional pointing them in the right direction.</div>
       <div class="neighbor-intro">
@@ -661,9 +674,70 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
         <div id="s6EmployerBadge" style="background:#eaf3de;color:#27500a;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-top:8px;display:inline-block;">Covered by your employer</div>
       </div>
       <div style="font-size:15px;font-weight:500;color:#1a3a5c;text-align:center;margin:0.75rem 0 0.5rem;">The difference isn’t luck. It’s having a real plan — built by someone who knows what they’re doing.</div>
-      <button class="btn-p" onclick="goTransition()">Get my plan →</button>
+      <button class="btn-p" onclick="go(7)">Get my plan →</button>
       <div class="hypothetical">* Hypothetical illustration only. Assumes $100,000 starting balance, 7% annual return without professional guidance and 10% with. Actual results will vary.</div>
       <div class="citation">Sources: American Academy of Sleep Medicine, 2025. Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024.</div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────
+       S7 — BEYOND THE NUMBERS (what an advisor actually does)
+  ───────────────────────────────────────────── -->
+  <!-- SKUNKWORKS-tested, shipped to production 2026-09-12, per Keiron (via
+       Alex): "maybe we introduce more things that an advisor does.. it
+       doesn't have to be performance based like the neighbor slide is..
+       access to reduced mortgage rates etc." Deliberately NOT a second
+       return comparison — S6 right above already owns that angle
+       (Vanguard's Advisor's Alpha study). Sourced from real research on
+       what advisors provide beyond investment performance (see citation
+       below), not invented copy. On "access to better rates": real
+       private-banking tiers (Chase Private Client, Citigold) do offer
+       preferential mortgage rates, but that's tied to bank deposit tiers,
+       not an independent advisor relationship — claiming an AssetAlign
+       advisor unlocks bank rate discounts would be a stretch. What's real
+       and already true of THIS product instead: the Marketplace already
+       connects members to vetted mortgage/insurance/estate partners —
+       that's the honest version of "access" used in item 4 below.
+       Slots into the existing s5/s7 gap in the screen numbering (see
+       go()'s own dev note on why S5/S7 were removed by id rather than
+       renumbered when they were cut) — sectionMap[7] already existed
+       reserved for this, and the 14-dot progress bar already accounts
+       for this slot (#p7), so nothing else needed renumbering. -->
+  <div class="screen" id="s7">
+    <div class="nav-row"><button class="back" onclick="go(6)">← Back</button><span class="step-ct">Section 1 — Setup</span></div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;">It's not just about the numbers.</div>
+      <div style="font-size:13px;color:#666;margin-bottom:1rem;line-height:1.6;">The growth chart you just saw is one real piece of it. Here's what an advisor actually does, day to day.</div>
+      <div class="expect-row">
+        <div class="expect-num">1</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">Coordinated decisions, not isolated ones</div>
+          <div style="font-size:12px;color:#666;line-height:1.5;">Your investments, insurance, taxes, and estate documents get tied together — so one decision doesn't quietly undercut another, like a beneficiary form that contradicts your will.</div>
+        </div>
+      </div>
+      <div class="expect-row">
+        <div class="expect-num">2</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">Tax-smart moves most people miss</div>
+          <div style="font-size:12px;color:#666;line-height:1.5;">Roth conversion timing, charitable giving, tax-loss harvesting — the kind of moves that are easy to miss on your own and hard to undo once a tax year closes.</div>
+        </div>
+      </div>
+      <div class="expect-row">
+        <div class="expect-num">3</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">A second set of eyes against costly mistakes</div>
+          <div style="font-size:12px;color:#666;line-height:1.5;">Panic-selling in a downturn, waiting too long on insurance, a mistitled account — the behavioral side of money is where a lot of real damage happens, quietly.</div>
+        </div>
+      </div>
+      <div class="expect-row">
+        <div class="expect-num">4</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px;">Access to a vetted network</div>
+          <div style="font-size:12px;color:#666;line-height:1.5;">Through the AssetAlign Marketplace, you get real, vetted partners for mortgage, insurance, and estate planning — the kind most people spend hours trying to find and trust on their own.</div>
+        </div>
+      </div>
+      <button class="btn-p" onclick="goTransition()">Get my plan →</button>
+      <div class="citation">Sources: Kinniry et al., "Putting a Value on Your Value: Quantifying Vanguard Advisor's Alpha®," The Vanguard Group, updated 2024. Estate/tax coordination practices per CFP Board and NAPFA member guidance.</div>
     </div>
   </div>
 
@@ -777,6 +851,27 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
            copy established earlier this session. -->
       <div style="font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6;">This is about getting your financial plan moving — nothing to sign, nothing to commit to. <span id="schedAdvisorFirst">Your advisor</span> already has your goals, so this takes just a few seconds.</div>
 
+      <!-- SKUNKWORKS-tested, shipped to production 2026-09-12, per Alex:
+           "is there a way we are going to let people skip the whole
+           advisor thing?.. if we were to give them an off ramp.. we want
+           it to take them to the workflow that says, thats ok, if you
+           aren't ready for a financial plan yet." This screen used to say
+           "booking is the only path forward — no skip/defer option" —
+           that's the actual reversal here, not a UI tweak. Placed above
+           the fold, right here, after being tested lower on the page
+           first and getting missed entirely ("i don't think i see the
+           off ramp") — given real visual weight (bordered box, not just
+           gray text) instead of reading as an afterthought. Routes
+           through skipAdvisorForNow() (see that function's own dev
+           note), which sends every real field a normal handoff would,
+           minus anything advisor/meeting-specific, plus an explicit
+           advisor_skipped=1 flag the dashboard uses to render an honest
+           "not matched yet" state. -->
+      <div style="background:#f7f9fc; border:1px solid #dde5ee; border-radius:10px; padding:14px 16px; margin-bottom:1.25rem; text-align:center;">
+        <div style="font-size:13px; color:#1a1a1a; font-weight:500; margin-bottom:6px;">Not ready for a full financial plan yet? That's completely fine.</div>
+        <button class="btn-ghost" style="width:auto; display:inline-block; padding:0; color:#1a3a5c; font-weight:700; text-decoration:underline;" onclick="skipAdvisorForNow()">See what else AssetAlign can do →</button>
+      </div>
+
       <!-- Advisor mini-card (populated by JS) -->
       <div id="schedAdvisorMini" class="sched-advisor-mini">
         <!-- Populated by showScheduleScreen() -->
@@ -818,8 +913,6 @@ body { background: #f5f5f3; font-family: -apple-system, BlinkMacSystemFont, 'Seg
           </div>
         </div>
       </div>
-
-      <!-- booking is the only path forward — no skip/defer option -->
     </div>
   </div>
 
@@ -1416,7 +1509,20 @@ function go(n, fromPopState){
   });
   document.getElementById('plabel').textContent = sectionMap[n]||'';
   if(n===3) buildGrid();
-  if(n===6) setTimeout(buildChart,300);
+  if(n===6){
+    setTimeout(buildChart,300);
+    // SKUNKWORKS-tested, shipped to production 2026-09-12 — real
+    // personalization for the new "now that we know your goal" opening
+    // line, same priorityLabels/selectedPriority goToTransition() already
+    // uses. Lowercases the first letter since priorityLabels are written
+    // as standalone sentence-case labels ("Buy a home"), not mid-sentence
+    // phrases.
+    const goalPhraseEl = document.getElementById('s6GoalPhrase');
+    if(goalPhraseEl){
+      const label = priorityLabels[selectedPriority] || 'reach your goal';
+      goalPhraseEl.textContent = label.charAt(0).toLowerCase() + label.slice(1);
+    }
+  }
   if(n===11) renderPrimaryAdvisor();
   if(n===12) showScheduleScreen(schedulingAdvisor || advisorArchive[0]);
   if(n===13) filterAdvisors(inPersonPreferred ? 'inperson' : 'all');
@@ -2483,7 +2589,12 @@ function bracketToMidpoint(answer){
   return map[answer] || 0;
 }
 
-function goToDashboard(){
+// SKUNKWORKS-tested, shipped to production 2026-09-12 — extracted so
+// goToDashboard() and the new skipAdvisorForNow() below share one source
+// of truth for every real field that doesn't depend on an advisor
+// actually being matched, rather than hand-duplicating this and letting
+// the two drift apart over time.
+function buildBaseHandoffParams(){
   // Carry the priority picked in S3 (+ the resolved Finch first name, home
   // state, S9 marital-status answer, and the 25-credit welcome bonus shown on
   // this screen) into the dashboard so it reflects what was already set here
@@ -2529,17 +2640,6 @@ function goToDashboard(){
   // that otherwise wrongly credits "your employer" (see shared.js's
   // aaResolveSession(), which reads this back in).
   if(isGift) handoffParams.set('independent', '1');
-  // 2026-09-08, real bug: the dashboard's "Your Advisor" card was hardcoded
-  // to a name ("Sarah Mitchell") that doesn't even exist in this file's own
-  // advisorArchive — never actually reflected who pickPrimaryAdvisor()/
-  // confirmAlt() matched this person with. schedulingAdvisor holds the
-  // real, final advisor by the time this fires (set on every path: primary
-  // pick, alt-advisor confirm, post-disclosure reschedule).
-  if(schedulingAdvisor){
-    handoffParams.set('advisor_name', schedulingAdvisor.name);
-    handoffParams.set('advisor_creds', schedulingAdvisor.credentials);
-    if(schedulingAdvisor.location) handoffParams.set('advisor_location', schedulingAdvisor.location);
-  }
   if(employerDisplay) handoffParams.set('employer_name', employerDisplay);
   // 2026-09-09 — Financial Passport schema expansion, per Alex: "we want
   // all information... anytime we can store data... we need it all."
@@ -2552,16 +2652,6 @@ function goToDashboard(){
     const years = Math.floor((Date.now() - startMs) / (365.25 * 24 * 60 * 60 * 1000));
     handoffParams.set('yearsAtCompany', years === 1 ? '1 year' : years + ' years');
     handoffParams.set('retirementPlanEnrolled', finchProfile.retirement_enrolled ? (finchProfile.retirement_type + ' enrolled') : 'No plan on file');
-  }
-  // 2026-09-09, per Alex: the dashboard-side "Your Advisor" rail needs the
-  // actual booked date/time to show "Meeting: <date>" (or, once that date
-  // has passed, "Last meeting: <date>") instead of a generic nudge. Only
-  // set when a real booking happened on this pass through the flow — see
-  // bookedMeetingDate's own dev note above for why calSelectedDate itself
-  // isn't reliable here.
-  if(bookedMeetingDate && bookedMeetingTimeLabel){
-    handoffParams.set('meeting_date', bookedMeetingDate.toISOString().slice(0,10));
-    handoffParams.set('meeting_time', bookedMeetingTimeLabel);
   }
   // Only send a real balance if at least one of the relevant questions was
   // actually answered — if all were skipped entirely, leave it unset so the
@@ -2585,9 +2675,54 @@ function goToDashboard(){
   Object.keys(S9_TO_PASSPORT).forEach(function(qid){
     if(selectedAnswers[qid]) handoffParams.set(S9_TO_PASSPORT[qid], selectedAnswers[qid]);
   });
+  return handoffParams;
+}
+
+function goToDashboard(){
+  const handoffParams = buildBaseHandoffParams();
+  // 2026-09-08, real bug: the dashboard's "Your Advisor" card was hardcoded
+  // to a name ("Sarah Mitchell") that doesn't even exist in this file's own
+  // advisorArchive — never actually reflected who pickPrimaryAdvisor()/
+  // confirmAlt() matched this person with. schedulingAdvisor holds the
+  // real, final advisor by the time this fires (set on every path: primary
+  // pick, alt-advisor confirm, post-disclosure reschedule).
+  if(schedulingAdvisor){
+    handoffParams.set('advisor_name', schedulingAdvisor.name);
+    handoffParams.set('advisor_creds', schedulingAdvisor.credentials);
+    if(schedulingAdvisor.location) handoffParams.set('advisor_location', schedulingAdvisor.location);
+  }
+  // 2026-09-09, per Alex: the dashboard-side "Your Advisor" rail needs the
+  // actual booked date/time to show "Meeting: <date>" (or, once that date
+  // has passed, "Last meeting: <date>") instead of a generic nudge. Only
+  // set when a real booking happened on this pass through the flow — see
+  // bookedMeetingDate's own dev note above for why calSelectedDate itself
+  // isn't reliable here.
+  if(bookedMeetingDate && bookedMeetingTimeLabel){
+    handoffParams.set('meeting_date', bookedMeetingDate.toISOString().slice(0,10));
+    handoffParams.set('meeting_time', bookedMeetingTimeLabel);
+  }
 
   // No artificial delay — S14 no longer shows in between, so there's
   // nothing on screen to hold for; go straight there.
+  window.location.href = 'https://assetalign-dashboard-v2.netlify.app/?' + handoffParams.toString();
+}
+
+// SKUNKWORKS-tested, shipped to production 2026-09-12, per Alex: "is there
+// a way we are going to let people skip the whole advisor thing?... if we
+// were to give them an off ramp.. we want it to take them to the workflow
+// that says, thats ok, if you aren't ready for a financial plan yet."
+// Lives on S12 (see the off-ramp box added to that screen above) — the
+// one screen whose own copy used to read "booking is the only path
+// forward — no skip/defer option." Deliberately does NOT forward
+// schedulingAdvisor or bookedMeetingDate even if either happens to
+// already be set (someone could have been matched on S11, then backed
+// out here on S12) — advisor_skipped=1 is the one explicit signal the
+// dashboard needs; see shared.js's aaResolveSession(), which uses it to
+// suppress the fake-default advisor name that would otherwise still
+// show up.
+function skipAdvisorForNow(){
+  const handoffParams = buildBaseHandoffParams();
+  handoffParams.set('advisor_skipped', '1');
   window.location.href = 'https://assetalign-dashboard-v2.netlify.app/?' + handoffParams.toString();
 }
 
